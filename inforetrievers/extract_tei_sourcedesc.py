@@ -98,13 +98,13 @@ if __name__ == "__main__":
         "--text-items",
         nargs="+",
         default=("title", "author", "date"),
-        help="The bibl types to consider (default: %(default)s)."
+        help="The textual elements to extract (default: %(default)s)."
     )
     parser.add_argument(
         "--attribute-items",
         nargs="+",
         default=("ref@target",),
-        help="The bibl types to consider (default: %(default)s)."
+        help="The attributes to extract (default: %(default)s)."
     )
 
     args = parser.parse_args()
