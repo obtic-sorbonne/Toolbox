@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """description:
-    Extrait des données au sujet de la source d'un TEI, en particulier ses
-    titre, auteur(rice), date et référence. Les métadonnées extraites du TEI
-    sont ensuite écrites sous la forme d'un TSV.
+  Extrait des données au sujet de la source d'un TEI, en particulier ses
+  titre, auteur(rice), date et référence. Les métadonnées extraites du TEI
+  sont ensuite écrites sous la forme d'un TSV.
 
 exemples d'utilisation:
-    python extract_tei_sourcedesc.py -h
-    python extract_tei_sourcedesc.py corpus/ metadata.tsv
-    python extract_tei_sourcedesc.py corpus/ metadata.tsv --bibl-types firstEdition printSource --text-items author date --attribute-items ref@target
+  python extract_tei_sourcedesc.py -h
+  python extract_tei_sourcedesc.py corpus/ metadata.tsv
+  python extract_tei_sourcedesc.py corpus/ metadata.tsv --bibl-types firstEdition printSource --text-items author date --attribute-items ref@target
 """
 
 from lxml import etree
@@ -87,7 +87,9 @@ if __name__ == "__main__":
         formatter_class=argparse.RawTextHelpFormatter
     )
     parser.add_argument("input_directory", nargs="?", default="./data", help="The input directory")
-    parser.add_argument("output_file", nargs="?", default="metadata.tsv", help="The name of the output file.")
+    parser.add_argument(
+        "output_file", nargs="?", default="metadata.tsv", help="The name of the output file."
+    )
     parser.add_argument(
         "--bibl-types",
         nargs="+",
@@ -109,4 +111,4 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     extract_tei_sourcedesc(**vars(args))
-    # sys.exit(0)
+    sys.exit(0)

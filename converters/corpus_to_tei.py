@@ -1,9 +1,13 @@
-#!/usr/bin/env python
-"""Transforme un ensemble de fichiers textes en TEI en cherchant les métadonnées
-dans un fichier ods.
+#!/usr/bin/env python3
+"""description:
+  Transforme un ensemble de fichiers textes en TEI en cherchant les métadonnées
+  dans un fichier ods.
+
+exemples d'utilisation:
+  python ./corpus_to_tei.py -h
+  python ./corpus_to_tei.py donnees-corrigees metadata.ods
 """
 
-import json
 import uuid
 import pathlib
 
@@ -13,9 +17,6 @@ from lxml.builder import ElementMaker
 from pyexcel_ods import get_data
 
 
-# la fonction principale qui va faire tout le boulot
-# on va se contenter de l'appeler avec les bons arguments dans la cellule d'après
-# le gros bloc entre """ est juste de la documentation.
 def corpus_to_tei(corpus_path, ods_path, ext=".txt", output_path="output"):
     """Convertit chaque fichier d'un dossier en TEI. Seuls les fichiers ayant
     la bonne extension seront convertis. Les fichiers TEI générés seront écrits
@@ -34,19 +35,22 @@ def corpus_to_tei(corpus_path, ods_path, ext=".txt", output_path="output"):
     """
 
     corpus_path = pathlib.Path(corpus_path)
-    E = ElementMaker(namespace="http://www.tei-c.org/ns/1.0", nsmap={None: "http://www.tei-c.org/ns/1.0"})
-    
+    E = ElementMaker(
+        namespace="http://www.tei-c.org/ns/1.0", nsmap={None: "http://www.tei-c.org/ns/1.0"}
+    )
+
     missingcorpusfiles = set(path.name for path in corpus_path.glob(f"*{ext}"))
     missingmetadatafiles = set()
 
     folder = pathlib.Path(output_path)
     if not folder.exists():
-        raise FileNotFoundError(f"Le dossier '{folder.absolute()}' n'existe pas: vous devez le créer.")
+        raise FileNotFoundError(
+            f"Le dossier '{folder.absolute()}' n'existe pas: vous devez le créer."
+        )
 
     data = get_data(ods_path)
     for i, row in enumerate(data['Sheet1']):
         if i == 0:
-            columns = row[:]
             continue
 
         try:
@@ -71,9 +75,9 @@ def corpus_to_tei(corpus_path, ods_path, ext=".txt", output_path="output"):
 
         missingcorpusfiles.remove(file_)
 
-        teifile = E.TEI (
-            E.teiHeader (
-                E.fileDesc (
+        teifile = E.TEI(
+            E.teiHeader(
+                E.fileDesc(
                     E.titleStmt(E.title(f"{toptitle}"), E.author(f"{author}")),
                     E.editionStmt(
                         E.edition("Thèse de doctorat"),
@@ -83,11 +87,16 @@ def corpus_to_tei(corpus_path, ods_path, ext=".txt", output_path="output"):
                         E.publisher("Obvil"),
                         E.date(when='2020'),
                         E.idno(),
-                        E.availability(E.licence(E.p, target="http://creativecommons.org/licenses/by-nc-nd/3.0/fr/"), status="restricted")
+                        E.availability(
+                            E.licence(
+                                E.p, target="http://creativecommons.org/licenses/by-nc-nd/3.0/fr/"
+                            ),
+                            status="restricted"
+                        )
                     ),
                     E.sourceDesc(E.bibl())
                 ),
-                E.profileDesc (
+                E.profileDesc(
                     E.creation(E.date(when=f"{'-'.join(pub_date.split('/')[::-1])}")),
                     E.langUsage(E.language(ident=f"{lang}")),
                     E.textClass(
@@ -95,7 +104,7 @@ def corpus_to_tei(corpus_path, ods_path, ext=".txt", output_path="output"):
                             E.term(f"{toptitle}", type="topTitle"),
                             E.term(f"{proj}", type="project"),
                             E.term(f"{uuid.uuid4().hex}", type="id"),
-                            E.term(f"{toptitle}", type="title"), # Modifier ici et mettre 'title' à la place de 'toptitle'
+                            E.term(f"{toptitle}", type="title"),  # Modifier ici et mettre 'title' à la place de 'toptitle'
                             E.term("OBVIL", type="edition"),
                             E.term(f"{publisher}", type="publisher"),
                             E.term(f"{author}", type="author"),
@@ -138,7 +147,10 @@ def corpus_to_tei(corpus_path, ods_path, ext=".txt", output_path="output"):
 if __name__ == "__main__":
     import argparse
 
-    parser = argparse.ArgumentParser(__doc__)
+    parser = argparse.ArgumentParser(
+        description=__doc__,
+        formatter_class=argparse.RawTextHelpFormatter
+    )
     parser.add_argument("corpus_path", help="donnees-corrigees")
     parser.add_argument("ods_path", help="metadata.ods")
     parser.add_argument("-e", "--ext", default=".txt", help="")
