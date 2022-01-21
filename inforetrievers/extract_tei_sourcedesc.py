@@ -29,7 +29,7 @@ def extract_tei_sourcedesc(
     output_file,
     bibl_types=("firstEdition", "printSource", "digitalSource"),
     text_items=("title", "author", "date"),
-    attribute_items=("ref@target",)
+    attribute_items=("ref@target",),
 ):
     liste_metadata = []
     fields = list(text_items)
@@ -83,8 +83,7 @@ if __name__ == "__main__":
     import sys
 
     parser = argparse.ArgumentParser(
-        description=__doc__,
-        formatter_class=argparse.RawTextHelpFormatter
+        description=__doc__, formatter_class=argparse.RawTextHelpFormatter
     )
     parser.add_argument("input_directory", nargs="?", default="./data", help="The input directory")
     parser.add_argument(
@@ -94,19 +93,19 @@ if __name__ == "__main__":
         "--bibl-types",
         nargs="+",
         default=("firstEdition", "printSource", "digitalSource"),
-        help="The bibl types to consider (default: %(default)s)."
+        help="The bibl types to consider (default: %(default)s).",
     )
     parser.add_argument(
         "--text-items",
         nargs="+",
         default=("title", "author", "date"),
-        help="The textual elements to extract (default: %(default)s)."
+        help="The textual elements to extract (default: %(default)s).",
     )
     parser.add_argument(
         "--attribute-items",
         nargs="+",
         default=("ref@target",),
-        help="The attributes to extract (default: %(default)s)."
+        help="The attributes to extract (default: %(default)s).",
     )
 
     args = parser.parse_args()

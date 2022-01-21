@@ -49,7 +49,7 @@ def corpus_to_tei(corpus_path, ods_path, ext=".txt", output_path="output"):
         )
 
     data = get_data(ods_path)
-    for i, row in enumerate(data['Sheet1']):
+    for i, row in enumerate(data["Sheet1"]):
         if i == 0:
             continue
 
@@ -66,7 +66,7 @@ def corpus_to_tei(corpus_path, ods_path, ext=".txt", output_path="output"):
             lang = "fre"
 
         try:
-            with open(corpus_path / file_, 'r', encoding='utf-8') as f:
+            with open(corpus_path / file_, "r", encoding="utf-8") as f:
                 text = f.read()
         except FileNotFoundError:
             # print(f"Fichier {corpus_path}/{file_} non trouvé")
@@ -81,20 +81,20 @@ def corpus_to_tei(corpus_path, ods_path, ext=".txt", output_path="output"):
                     E.titleStmt(E.title(f"{toptitle}"), E.author(f"{author}")),
                     E.editionStmt(
                         E.edition("Thèse de doctorat"),
-                        E.respStmt(E.resp(), E.name("Angélique Allaire"))
+                        E.respStmt(E.resp(), E.name("Angélique Allaire")),
                     ),
                     E.publicationStmt(
                         E.publisher("Obvil"),
-                        E.date(when='2020'),
+                        E.date(when="2020"),
                         E.idno(),
                         E.availability(
                             E.licence(
                                 E.p, target="http://creativecommons.org/licenses/by-nc-nd/3.0/fr/"
                             ),
-                            status="restricted"
-                        )
+                            status="restricted",
+                        ),
                     ),
-                    E.sourceDesc(E.bibl())
+                    E.sourceDesc(E.bibl()),
                 ),
                 E.profileDesc(
                     E.creation(E.date(when=f"{'-'.join(pub_date.split('/')[::-1])}")),
@@ -104,34 +104,26 @@ def corpus_to_tei(corpus_path, ods_path, ext=".txt", output_path="output"):
                             E.term(f"{toptitle}", type="topTitle"),
                             E.term(f"{proj}", type="project"),
                             E.term(f"{uuid.uuid4().hex}", type="id"),
-                            E.term(f"{toptitle}", type="title"),  # Modifier ici et mettre 'title' à la place de 'toptitle'
+                            E.term(
+                                f"{toptitle}", type="title"
+                            ),  # Modifier ici et mettre 'title' à la place de 'toptitle'
                             E.term("OBVIL", type="edition"),
                             E.term(f"{publisher}", type="publisher"),
                             E.term(f"{author}", type="author"),
                             E.term(type="recipient"),
                             E.term(f"{pub_date}", type="date"),
-                            scheme="indexation"
+                            scheme="indexation",
                         )
-                    )
-                )
+                    ),
+                ),
             ),
-
-            E.text(
-                E.body(
-                    E.div(*[E.p(t.strip()) for t in text.split('\n') if t.strip()])
-                )
-            )
+            E.text(E.body(E.div(*[E.p(t.strip()) for t in text.split("\n") if t.strip()]))),
         )
 
         f = f"{folder}/{filename}.xml"
-        with open(f, 'wb') as fout:
+        with open(f, "wb") as fout:
             fout.write(
-                etree.tostring(
-                    teifile,
-                    xml_declaration=True,
-                    pretty_print=True,
-                    encoding='UTF-8'
-                )
+                etree.tostring(teifile, xml_declaration=True, pretty_print=True, encoding="UTF-8")
             )
 
     print()
@@ -139,7 +131,9 @@ def corpus_to_tei(corpus_path, ods_path, ext=".txt", output_path="output"):
     for item in sorted(missingcorpusfiles):
         print(f"\t{item}")
     print()
-    print(f"Les fichiers suivants des métadonnées '{ods_path}' sont absents du corpus '{corpus_path}':")
+    print(
+        f"Les fichiers suivants des métadonnées '{ods_path}' sont absents du corpus '{corpus_path}':"
+    )
     for item in sorted(missingmetadatafiles):
         print(f"\t{item}")
 
@@ -148,8 +142,7 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(
-        description=__doc__,
-        formatter_class=argparse.RawTextHelpFormatter
+        description=__doc__, formatter_class=argparse.RawTextHelpFormatter
     )
     parser.add_argument("corpus_path", help="donnees-corrigees")
     parser.add_argument("ods_path", help="metadata.ods")
