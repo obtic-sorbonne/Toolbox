@@ -2,7 +2,7 @@
 
 # Toolbox
 
-Ce dépôt sert à rassembler tous les scripts utiles pour la manipulation et le traitement de données textuelles.
+L'équipe ObTIC mets à disposition une suite d'outils, de script et de ressources utiles pour la manipulation et le traitement de données textuelles.
 
 # Style de code
 
