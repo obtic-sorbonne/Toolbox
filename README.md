@@ -1,5 +1,7 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
+[![Code style: blue](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
 # Toolbox
 
 L'équipe ObTIC mets à disposition une suite d'outils, de script et de ressources utiles pour la manipulation et le traitement de données textuelles.
