@@ -1,0 +1,3 @@
+[submodule "OCR/OCR/partie"]
+	path = OCR/OCR/partie
+	url = https://github.com/ljpetkovic/Registre_R416
