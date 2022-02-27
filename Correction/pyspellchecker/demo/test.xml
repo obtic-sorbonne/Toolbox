@@ -1,0 +1,131 @@
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xml:lang="fr" n="5419000" xml:id="cb30263946g">
+  <teiHeader>
+    <fileDesc>
+      <titleStmt>
+        <title>Les livres classiques de l'empire de la Chine</title>
+        <author role="Auteur du texte" key="11909957">Confucius (0551?-0479? av. J.-C.)</author>
+        <respStmt>
+          <resp key="40">Annotateur</resp>
+          <name key="12176450">Pluquet, François-André-Adrien (1716-1790)</name>
+        </respStmt>
+        <respStmt>
+          <resp key="680">Traducteur</resp>
+          <name key="16653645">Noël, François (1651-1729)</name>
+        </respStmt>
+      </titleStmt>
+      <publicationStmt>
+        <publisher>TGB (BnF – OBVIL)</publisher>
+      </publicationStmt>
+      <seriesStmt>
+        <title level="s">Les livres classiques de l'empire de la Chine</title>
+        <title level="a">Tome 2</title>
+        <biblScope unit="volumes" n="6"/>
+        <idno>cb30263946g</idno>
+      </seriesStmt>
+      <sourceDesc>
+        <bibl>
+          <idno>http://gallica.bnf.fr/ark:/12148/bpt6k54190001</idno>
+          <publisher>Barrois aîné et Barrois jeune</publisher>
+          <date when="1784">1784</date>
+        </bibl>
+      </sourceDesc>
+    </fileDesc>
+    <xenoData>
+      <date>1784</date>
+      <title>Les livres classiques de l'empire de la Chine — Tome 2</title>
+      <dewey>950 - Histoire générale de l'Asie</dewey>
+      <meta-data_comprehensiveness_score>0.67</meta-data_comprehensiveness_score>
+      <authors>
+        <author_1>
+          <alpha_key>confucius</alpha_key>
+          <age_at_publication>1233</age_at_publication>
+          <last_name>Confucius</last_name>
+          <key>11909957</key>
+          <author>Confucius (0551?-0479? av. J.-C.)</author>
+          <is_reconciliated>True</is_reconciliated>
+          <death>0479</death>
+          <role>Auteur du texte</role>
+          <birth>0551</birth>
+        </author_1>
+      </authors>
+    </xenoData>
+  </teiHeader>
+  <text>
+    <body>
+      <pb xml:id="PAG_00000001" n="" corresp="http://gallica.bnf.fr/ark:/12148/bpt6k54190001/f1.image"/>
+      <pb xml:id="PAG_00000002" n="" corresp="http://gallica.bnf.fr/ark:/12148/bpt6k54190001/f2.image"/>
+      <pb xml:id="PAG_00000003" n="" corresp="http://gallica.bnf.fr/ark:/12148/bpt6k54190001/f3.image"/>
+      <pb xml:id="PAG_00000004" n="" corresp="http://gallica.bnf.fr/ark:/12148/bpt6k54190001/f4.image"/>
+      <div>
+        <head>Livres classiques</head>
+        <p rend="left">
+DE L’EMPIRE .
+</p>
+      </div>
+      <div>
+        <head>De la chine.</head>
+        <pb xml:id="PAG_00000005" n="" corresp="http://gallica.bnf.fr/ark:/12148/bpt6k54190001/f5.image"/>
+        <pb xml:id="PAG_00000006" n="" corresp="http://gallica.bnf.fr/ark:/12148/bpt6k54190001/f6.image"/>
+        <pb xml:id="PAG_00000007" n="" corresp="http://gallica.bnf.fr/ark:/12148/bpt6k54190001/f7.image"/>
+        <pb xml:id="PAG_00000008" n="" corresp="http://gallica.bnf.fr/ark:/12148/bpt6k54190001/f8.image"/>
+      </div>
+      <div>
+        <head>Observations</head>
+        <p rend="left small">SUR</p>
+        <p rend="center small">LES LIVRES CLASSIQUES</p>
+        <p rend="center small">DE L’EMPIRE</p>
+        <p rend="center small">DE LA CHINE.</p>
+        <p rend="small">.LES Chinois ont deux sortes de
+livres clafliques ou canoniques : les
+Kings, ou les livres canoniques du
+premier ordre ; &amp; les Ssée-chu, ou
+livres canoniques dusecond ordre.</p>
+        <p rend="small">Les Kings sont au nombre de
+cinq ; l’Y-king, le Chu-king,lc
+Chi-king, le Tchun-tfiou &amp; le Lild.</p>
+        <p rend="left small">L’Y-king remonte à la plus haute
+<hi rend="i">Tome II. a</hi></p>
+        <p rend="left"><hi rend="i">'\</hi><pb xml:id="PAG_00000009" n="" corresp="http://gallica.bnf.fr/ark:/12148/bpt6k54190001/f9.image"/>ij O B S E K.VATI ON S.</p>
+        <p rend="small">antiquité ; on l’attribue en grande
+partie à Fo - hi : c’eft un ouvrage
+qui, par le moyen des <hi rend="i">emblèmes</hi>,
+explique ou repréfente la doétrine
+des anciens temps fur les diverfes
+opérations de la nature, fur les différents
+ce pour fe repofer &amp; pour y conf« 
+truire sûrement leurs nids. =&gt;
+états de la vie humaine, fur
+les vertus &amp; fur les vices , fur
+les sorts heureux ou malheureux.
+Ainfi, par exemple, des montagnes
+sous terre fignifîent l’humilité, &amp; la
+difpolîtion ou la longueur de différentes
+lignes combinées fervent à exprimer
+les effets de cette vertu ( i).</p>
+        <p rend="small">(i) Notice de l’Y-king, par M. Vifdeîau,
+à la fin de la traduction du Chufcing.</p>
+        <pb xml:id="PAG_00000010" n="" corresp="http://gallica.bnf.fr/ark:/12148/bpt6k54190001/f10.image"/>
+        <p rend="left small">O B S E R VAT1 O N S. iij</p>
+        <p rend="small">Le Chu-king efl: l’hiftoire des
+premiers empereurs, relativement
+à la morale &amp; à la politique, ou le
+recueil de leurs principes fur la morale
+&amp; fur le gouvernement.</p>
+        <p rend="small">Le Chi-king efl: un recueil de
+poéfies composées sous les règnes
+de la troifieme race, &amp; dans lefquelles
+on décrit les moeurs, les
+coutumes-, les maximes des petits
+rois qui gouvernoient les provinces
+sous la dépendance de l’empereur
+(i).</p>
+      </div>
+      <div>
+        <head>Fin. (|\\ï:</head>
+        <pb xml:id="PAG_00000276" n="" corresp="http://gallica.bnf.fr/ark:/12148/bpt6k54190001/f276.image"/>
+        <pb xml:id="PAG_00000277" n="" corresp="http://gallica.bnf.fr/ark:/12148/bpt6k54190001/f277.image"/>
+        <pb xml:id="PAG_00000278" n="" corresp="http://gallica.bnf.fr/ark:/12148/bpt6k54190001/f278.image"/>
+      </div>
+    </body>
+  </text>
+</TEI>
