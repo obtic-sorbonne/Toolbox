@@ -19,7 +19,7 @@ prélevés au début, au milieu et à la fin du texte. Tous les échantillons se
 # PARAMETRE OBLIGATOIRE
 # ----------------------------------------------------------------
 # Copiez et collez l'adresse du livre sur wikisource
-book_location = "https://fr.wikisource.org/wiki/%C3%80_vau-l%E2%80%99eau"
+book_location = ""
 
 # PARAMETRES OPTIONNELS
 # ----------------------------------------------------------------
@@ -44,6 +44,7 @@ from urllib.parse import urlparse
 import io
 import re
 import sys
+import random
 
 
 def chapters(book_location):
@@ -84,9 +85,37 @@ def chapters(book_location):
     return sections
 
 
+random_texts = [
+"Nana/Texte_entier",
+"Au_bonheur_des_dames/Texte_entier",
+"L%E2%80%99Argent_(Zola)/Texte_entier",
+"%C3%80_vau-l%E2%80%99eau",
+"Marthe,_histoire_d%E2%80%99une_fille/Texte_entier",
+"Les_S%C5%93urs_Vatard/Texte_entier",
+"En_m%C3%A9nage",
+"Les_Diaboliques/La_vengeance_d%E2%80%99une_femme",
+"Germinie_Lacerteux/Texte_entier",
+"Le_Journal_d%E2%80%99une_femme_de_chambre/Texte_entier",
+"Le_Calvaire/Texte_entier",
+"Le_Colonel_Chabert",
+"La_Cousine_Bette_(ed._Houssiaux)",
+"Une_t%C3%A9n%C3%A9breuse_affaire",
+"Louis_Lambert",
+"Le_Chef-d%E2%80%99%C5%93uvre_inconnu",
+"Physiologie_du_Mariage",
+"L%E2%80%99%C3%89ducation_sentimentale,_%C3%A9d._Conard,_1910/Texte_entier",
+"L%E2%80%99Insurg%C3%A9_(Vall%C3%A8s)/Texte_entier",
+"L%E2%80%99Enfant_(Vall%C3%A8s)/Texte_entier",
+]
+
 
 if __name__ == '__main__':
     sections = []
+
+    # Generate sample from random list
+    if not book_location:
+        text = random.choice(random_texts)
+        book_location = "https://fr.wikisource.org/wiki/" + text
 
     # Auto extraction of filename if not define
     if not filename:
