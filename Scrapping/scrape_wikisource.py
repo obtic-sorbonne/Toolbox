@@ -1,7 +1,7 @@
 ##################################################################
 #L'idée de ce script, selon Motasem, est de générer 10% du roman entier,
 #à condition que le résultat ne dépasse pas 10000 mots (sinon réduire le pourcentage).
-# créé par James Gawley
+# créé par James Gawley - maintenance et développement Johanna Cordova
 
 """Ce script téléchargera un texte à partir de wikisource et échantillonnera
 le texte pour le tester. Si le texte est divisé en plusieurs chapitres, chaque
@@ -15,49 +15,43 @@ prélevés au début, au milieu et à la fin du texte. Tous les échantillons se
 
 # Version 1.1
 
-
 ##################################################################
+# PARAMETRE OBLIGATOIRE
+# ----------------------------------------------------------------
+# Copiez et collez l'adresse du livre sur wikisource
+book_location = "https://fr.wikisource.org/wiki/%C3%80_vau-l%E2%80%99eau"
 
-#Copiez et collez l'adresse du livre sur wikisource :
-book_location = "https://fr.wikisource.org/wiki/Germinie_Lacerteux/Texte_entier"
+# PARAMETRES OPTIONNELS
+# ----------------------------------------------------------------
+# Spécifiez un nom de fichier pour la sortie
+filename = ""
 
-# Lisez s'il-vous plait:
-"""Attention : s'il y a des accents ou des ponctuations dans le titre, il faut les retaper
-soigneusement dans le fichier script. Par exemple, si vous copiez
-"https://fr.wikisource.org/wiki/L'Éducation_sentimentale,_éd._Conard,_1910"
-et le coller dans ce script, il peut être changé en
-"https://fr.wikisource.org/wiki/L%E2%80%99%C3%89ducation_sentimentale,_%C3%A9d._Conard,_1910".
-Le script ne s'exécutera pas et vous recevrez un message d'erreur."""
-
-#Indiquez si le texte est divisé en chapitres : oui / non
+# Activer l'échantillonnage par chapitres ou parties [oui/non]
 chapitres = "non"
-
-# Spécifiez un nom de fichier unique pour la sortie.
-filename = "Goncourt-Lacerteux.txt"
 
 # Personnalisez la longueur de l'échantillon / en caracteres
 char_limit =  60000
 
 
 ##################################################################
-"""Fin des options."""
+"""Fin des paramètres."""
 ##################################################################
 
 from bs4 import BeautifulSoup
 import urllib
 from urllib import parse, request
-import codecs
+from urllib.parse import urlparse
+import io
 import re
 import sys
 
 
-outfile = codecs.open(filename, "w", encoding='utf-8')
-
-sections = []
 def chapters(book_location):
     # find the location of all chapters in a table-of-contents page
     book = book_location.replace("https://fr.wikisource.org/wiki/", "")
-    book = urllib.parse.quote(book)
+    # Escape URL if not already escaped
+    if not '%' in book:
+        book = urllib.parse.quote(book)
     book_location = "".join(["https://fr.wikisource.org/wiki/", book])
     try:
         index_page = request.urlopen(book_location)
@@ -89,61 +83,78 @@ def chapters(book_location):
                 continue
     return sections
 
-if chapitres == "oui":
-    sections = chapters(book_location)
-elif chapitres != "oui":
-    sections.append(book_location.replace("https://fr.wikisource.org", ""))
 
-#grab all the text
-chapters = []
-for source_page in sections:
-    location = "".join(["https://fr.wikisource.org", source_page])
-    try:
-        page = request.urlopen(location)
-    except:
-        print("No server is associated with the following page:")
+
+if __name__ == '__main__':
+    sections = []
+
+    # Auto extraction of filename if not define
+    if not filename:
+        path_elems = urlparse(book_location).path.split('/')
+        if path_elems[-1] != 'Texte_entier':
+            filename = urllib.parse.unquote(path_elems[-1])
+        else:
+            filename = urllib.parse.unquote(path_elems[-2])
+
+    # Opening output file
+    outfile = io.open(filename, "w", encoding='utf-8')
+
+    # Scrapping sections
+    if chapitres == "oui":
+        sections = chapters(book_location)
+    else:
+        sections.append(book_location.replace("https://fr.wikisource.org", ""))
+
+    #grab all the text
+    chapters = []
+    for source_page in sections:
+        location = "".join(["https://fr.wikisource.org", source_page])
+        try:
+            page = request.urlopen(location)
+        except:
+            print("No server is associated with the following page:")
+            print(location)
+            continue
+        soup = BeautifulSoup(page, 'html.parser')
         print(location)
-        continue
-    soup = BeautifulSoup(page, 'html.parser')
-    print(location)
-    text = soup.findAll("div", attrs={'class': 'prp-pages-output'})
+        text = soup.findAll("div", attrs={'class': 'prp-pages-output'})
 
-    if len(text) == 0:
-        print("This does not appear to be part of the text (no prp-pages-output tag at this location).")
-        continue
+        if len(text) == 0:
+            print("This does not appear to be part of the text (no prp-pages-output tag at this location).")
+            continue
 
-    # Remove end of line inside sentence     
-    clean_text = re.sub("[^\.:!?»]\n", ' ', text[0].text)
+        # Remove end of line inside sentence
+        clean_text = re.sub("[^\.:!?»[A-Z]]\n", ' ', text[0].text)
 
-    chapters.append(clean_text)
+        chapters.append(clean_text)
 
-#if the text has chapters, sample from each one. Otherwise take three samples.
-if chapitres == "oui":
-    cutoff = int(char_limit / len(chapters))
-    print(cutoff)
-    outfile.write(location)
-    for chap in chapters:
-        sample = chap[0:cutoff]
-        sample = re.sub("^.+?([.;!?])", "\\1", sample[::-1], 0, re.DOTALL)
-        outfile.write(sample[::-1])
-        outfile.write("\n\n\n\n\n\n")
-else:
-    cutoff = int(char_limit / 3)
-    inception_points = []
-    inception_points.append(0)
-    inception_points.append(int(len(chapters[0])/3))
-    inception_points.append(int(len(chapters[0])/3) * 2)
-    print(inception_points)
-    samples = []
-    for begin in inception_points:
-        end = begin + cutoff
-        s = chapters[0][begin:end]
-        #clean the beginning and end of the sample
-        s = re.sub("\\A\n*.+?([.;?!])", "", s)
-        s = re.sub("^.+?([.;!?])", "\\1", s[::-1], 0, re.DOTALL)
-        samples.append(s[::-1])
-    samples[0] = re.sub("\\A.+\\n", "", samples[0])
-    outfile.write(location)
-    for sample in samples:
-        outfile.write(sample)
-        outfile.write("\n\n\n\n\n\n")
+    #if the text has chapters, sample from each one. Otherwise take three samples.
+    if chapitres == "oui":
+        cutoff = int(char_limit / len(chapters))
+        print(cutoff)
+        outfile.write(urllib.parse.unquote(location) + '\n\n')
+        for chap in chapters:
+            sample = chap[0:cutoff]
+            sample = re.sub("^.+?([.;!?])", "\\1", sample[::-1], 0, re.DOTALL)
+            outfile.write(sample[::-1])
+            outfile.write("\n\n\n\n\n\n")
+    else:
+        cutoff = int(char_limit / 3)
+        inception_points = []
+        inception_points.append(0)
+        inception_points.append(int(len(chapters[0])/3))
+        inception_points.append(int(len(chapters[0])/3) * 2)
+        print(inception_points)
+        samples = []
+        for begin in inception_points:
+            end = begin + cutoff
+            s = chapters[0][begin:end]
+            #clean the beginning and end of the sample
+            s = re.sub("\\A\n*.+?([.;?!])", "", s)
+            s = re.sub("^.+?([.;!?])", "\\1", s[::-1], 0, re.DOTALL)
+            samples.append(s[::-1])
+        samples[0] = re.sub("\\A.+\\n", "", samples[0])
+        outfile.write(urllib.parse.unquote(location) + '\n\n')
+        for sample in samples:
+            outfile.write(sample)
+            outfile.write("\n\n\n\n\n\n")
