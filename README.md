@@ -12,13 +12,15 @@ La plateforme [Wikisource](https://fr.wikisource.org/wiki/Wikisource:Accueil) co
 Prérequis : Beautiful Soup 4 doit être installé 
 `pip install bs4`
 
+📌  **Utilisation rapide** : `python scrape_wikisource.py`
+Extrait un échantillon dans un texte sélectionné aléatoirement sur Wikisource.
 
-Deux techniques d'extraction sont disponibles :
-1. Extraction d'une partie d'un texte intégral
-2. Extraction de plusieurs sous-parties piochées à travers les chapitres d'un texte
+
+**Utilisation avancée** : Deux techniques d'extraction sont disponibles : extraction d'une partie d'un texte intégral et extraction de plusieurs sous-parties piochées à travers les chapitres d'un texte.
 
 #### Extraction à partir du texte intégral
 Méthode d'extraction par défaut.
+Il est nécessaire d'ouvrir le script et de remplir la valeur de la variable `book_location` avec l'URL du texte dont on veut extraire un échantillon.
 En général, les textes complets figurent sur Wikisource sous une URL terminant par /Texte_entier.
 
 #### Extraction de sous-parties à partir d'un sommaire
