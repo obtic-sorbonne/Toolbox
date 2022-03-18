@@ -2,8 +2,7 @@
 
 L'équipe [ObTIC-Sorbonne](https://obtic.sorbonne-universite.fr/) met à disposition une suite d'outils, de scripts et de ressources utiles pour la manipulation et le traitement de données textuelles.
 
-
-https://obtic.sorbonne-universite.fr/wp-content/uploads/2022/03/data.png
+![alt text](https://obtic.sorbonne-universite.fr/wp-content/uploads/2022/03/data.png)
 
 ## Description des outils
 
