@@ -1,7 +1,8 @@
 ##################################################################
-#L'idée de ce script, selon Motasem, est de générer 10% du roman entier,
-#à condition que le résultat ne dépasse pas 10000 mots (sinon réduire le pourcentage).
-# créé par James Gawley - maintenance et développement Johanna Cordova
+#L'idée de ce script est de pouvoir télécharger à partir du site Wikisource des textes ou des extraits de textes 
+#pour les annoter dans un deuxième temps dans d'autres applications comme Brat ou Inception.
+#Les paramètres doivent être personnalisables dans le script à l'aide de variables: url, longueur souhaitée, etc.
+#Proposé par Motasem Alrahabi, créé par James Gawley, maintenance et développement par Johanna Cordova (ObTIC).
 
 """Ce script téléchargera un texte à partir de wikisource et échantillonnera
 le texte pour le tester. Si le texte est divisé en plusieurs chapitres, chaque
