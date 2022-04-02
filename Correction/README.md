@@ -14,6 +14,7 @@ The code for spellchecking the texts with `pyenchant` was originally written by 
 
 # Workflow
 The flowchart diagram below illustrates the general idea of the project:
+![alt text](/Volumes/Motasem/pc-ljudmila/Toolbox/Correction/img/post-ocr.drawio.png)
 
 # Results
 The use of those three libraries has relatively improved the text output, even though some results are not perfect:
