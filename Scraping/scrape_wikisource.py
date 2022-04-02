@@ -1,8 +1,7 @@
 ##################################################################
-#L'idée de ce script est de pouvoir télécharger à partir du site Wikisource des textes ou des extraits de textes 
-#pour les annoter dans un deuxième temps dans d'autres applications comme Brat ou Inception.
-#Les paramètres doivent être personnalisables dans le script à l'aide de variables: url, longueur souhaitée, etc.
-#Proposé par Motasem Alrahabi, créé par James Gawley, maintenance et développement par Johanna Cordova (ObTIC).
+#L'idée de ce script, selon Motasem, est de générer 10% du roman entier,
+#à condition que le résultat ne dépasse pas 10000 mots (sinon réduire le pourcentage).
+# créé par James Gawley - maintenance et développement Johanna Cordova
 
 """Ce script téléchargera un texte à partir de wikisource et échantillonnera
 le texte pour le tester. Si le texte est divisé en plusieurs chapitres, chaque
@@ -26,6 +25,9 @@ book_location = ""
 # ----------------------------------------------------------------
 # Spécifiez un nom de fichier pour la sortie
 filename = ""
+
+# Télécharger l'ensemble du texte [oui / non]
+texte_complet = "oui"
 
 # Activer l'échantillonnage par chapitres ou parties [oui/non]
 chapitres = "non"
@@ -157,34 +159,39 @@ if __name__ == '__main__':
         clean_text = re.sub("[^\.:!?»[A-Z]]\n", ' ', text[0].text)
 
         chapters.append(clean_text)
+    
+    #FULL TEXT
+    if texte_complet == "oui":
+        outfile.write('\n\n\n'.join(chapters))
 
-    #if the text has chapters, sample from each one. Otherwise take three samples.
-    if chapitres == "oui":
-        cutoff = int(char_limit / len(chapters))
-        print(cutoff)
-        outfile.write(urllib.parse.unquote(location) + '\n\n')
-        for chap in chapters:
-            sample = chap[0:cutoff]
-            sample = re.sub("^.+?([.;!?])", "\\1", sample[::-1], 0, re.DOTALL)
-            outfile.write(sample[::-1])
-            outfile.write("\n\n\n\n\n\n")
     else:
-        cutoff = int(char_limit / 3)
-        inception_points = []
-        inception_points.append(0)
-        inception_points.append(int(len(chapters[0])/3))
-        inception_points.append(int(len(chapters[0])/3) * 2)
-        print(inception_points)
-        samples = []
-        for begin in inception_points:
-            end = begin + cutoff
-            s = chapters[0][begin:end]
-            #clean the beginning and end of the sample
-            s = re.sub("\\A\n*.+?([.;?!])", "", s)
-            s = re.sub("^.+?([.;!?])", "\\1", s[::-1], 0, re.DOTALL)
-            samples.append(s[::-1])
-        samples[0] = re.sub("\\A.+\\n", "", samples[0])
-        outfile.write(urllib.parse.unquote(location) + '\n\n')
-        for sample in samples:
-            outfile.write(sample)
-            outfile.write("\n\n\n\n\n\n")
+        #if the text has chapters, sample from each one. Otherwise take three samples.
+        if chapitres == "oui":
+            cutoff = int(char_limit / len(chapters))
+            print(cutoff)
+            outfile.write(urllib.parse.unquote(location) + '\n\n')
+            for chap in chapters:
+                sample = chap[0:cutoff]
+                sample = re.sub("^.+?([.;!?])", "\\1", sample[::-1], 0, re.DOTALL)
+                outfile.write(sample[::-1])
+                outfile.write("\n\n\n\n\n\n")
+        else:
+            cutoff = int(char_limit / 3)
+            inception_points = []
+            inception_points.append(0)
+            inception_points.append(int(len(chapters[0])/3))
+            inception_points.append(int(len(chapters[0])/3) * 2)
+            print(inception_points)
+            samples = []
+            for begin in inception_points:
+                end = begin + cutoff
+                s = chapters[0][begin:end]
+                #clean the beginning and end of the sample
+                s = re.sub("\\A\n*.+?([.;?!])", "", s)
+                s = re.sub("^.+?([.;!?])", "\\1", s[::-1], 0, re.DOTALL)
+                samples.append(s[::-1])
+            samples[0] = re.sub("\\A.+\\n", "", samples[0])
+            outfile.write(urllib.parse.unquote(location) + '\n\n')
+            for sample in samples:
+                outfile.write(sample)
+                outfile.write("\n\n\n\n\n\n")
