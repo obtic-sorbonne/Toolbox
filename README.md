@@ -34,3 +34,7 @@ L'URL à fournir est celle de la page Wikisource listant les chapitres de l'œuv
 #### Entraîner un modèle SpaCy
 
 Voir le dossier [Entités nommées/train_spacy](Entités nommées/train_spacy) pour avoir la procédure détaillée.
+
+#### Configurer un recommandeur sur le service web Inception
+
+Voir le dossier [Entités nommées/inception-recommandeur](Entités nommées/inception-recommandeur).
