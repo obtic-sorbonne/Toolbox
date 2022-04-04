@@ -28,3 +28,9 @@ En général, les textes complets figurent sur Wikisource sous une URL terminant
 #### Extraction de sous-parties à partir d'un sommaire
 Pour activer cette option, il est nécessaire de fixer dans le script la variable `chapitres` à la valeur 'oui'.
 L'URL à fournir est celle de la page Wikisource listant les chapitres de l'œuvre.
+
+### Reconnaissance des entités nommées
+
+#### Entraîner un modèle SpaCy
+
+Voir le dossier [Entités nommées/train_spacy](Entités nommées/train_spacy) pour avoir la procédure détaillée.

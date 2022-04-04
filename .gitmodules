@@ -4,3 +4,6 @@
 [submodule "Fouille/minerva"]
 	path = Fouille/minerva
 	url = https://github.com/YoannDupont/minerva
+[submodule "Entités nommées/train_spacy"]
+	path = Entités nommées/train_spacy
+	url = https://github.com/YoannDupont/train_spacy
