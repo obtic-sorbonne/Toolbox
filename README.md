@@ -33,8 +33,8 @@ L'URL à fournir est celle de la page Wikisource listant les chapitres de l'œuv
 
 #### Entraîner un modèle SpaCy
 
-Voir le dossier `train_spacy` dans le dossier [https://github.com/obtic-scai/Toolbox/tree/dev/Entit%C3%A9s%20nomm%C3%A9es](Entités nommées) pour avoir la procédure détaillée.
+Voir le dossier `train_spacy` dans le dossier [Entités nommées](https://github.com/obtic-scai/Toolbox/tree/dev/Entit%C3%A9s%20nomm%C3%A9es) pour avoir la procédure détaillée.
 
 #### Configurer un recommandeur sur le service web Inception
 
-Voir le dossier [https://github.com/obtic-scai/Toolbox/tree/dev/Entit%C3%A9s%20nomm%C3%A9es/inception-recommandeur](Entités nommées/inception-recommandeur).
+Voir le dossier [Entités nommées/inception-recommandeur](https://github.com/obtic-scai/Toolbox/tree/dev/Entit%C3%A9s%20nomm%C3%A9es/inception-recommandeur).
