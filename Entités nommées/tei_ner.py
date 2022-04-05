@@ -71,7 +71,7 @@ def tei_ner(fichier, balise, annotateur, iterateur):
         # formatting as we will provide annotations for the text and replace the
         # content of the XML, so beware.
         text = etree.tostring(node, method="text", encoding="utf-8").decode("utf-8").strip()
-=
+
         node.clear()
 
         prev = 0
