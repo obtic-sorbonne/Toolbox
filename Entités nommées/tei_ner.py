@@ -18,11 +18,33 @@ exemples d'utilisation:
     python ./tei_ner.py -h
     python ./tei_ner.py entree.xml.tei sortie.xml.tei
     python ./tei_ner.py entree.xml.tei sortie.xml.tei -a spacy -m fr_core_news_lg -b s
+    python ./tei_ner.py entree.xml.tei sortie.xml.tei -a flair -m "flair/ner-french"
 """
 
 import pathlib
-import spacy
+import functools
 from lxml import etree
+
+import spacy
+
+from flair.data import Sentence as FlairSentence
+from flair.models import SequenceTagger
+
+
+def flair_annotate(sentence, modele):
+    s = FlairSentence(sentence)
+    modele.predict(s)
+    return s
+
+
+def get_label_function(annotateur_name, annotateur):
+    if annotateur_name == "flair":
+        return functools.partial(flair_annotate, modele=annotateur)
+
+    if annotateur_name == "spacy":
+        return annotateur.__call__
+
+    raise KeyError(f"{annotateur_name} n'a pas de fonction d'annotation connue")
 
 
 def spacy_iterate(doc):
@@ -30,12 +52,19 @@ def spacy_iterate(doc):
         yield (entity.label_, entity.start_char, entity.end_char)
 
 
+def flair_iterate(doc):
+    for entity in doc.get_spans('ner'):
+        yield (entity.tag, entity.start_pos, entity.end_pos)
+
+
 loaders = {
     "spacy": spacy.load,
+    "flair": SequenceTagger.load,
 }
 
 entity_iterators = {
     "spacy": spacy_iterate,
+    "flair": flair_iterate,
 }
 
 
@@ -48,7 +77,7 @@ def tei_ner(fichier, balise, annotateur, iterateur):
     ----------
     fichier : str or pathlike
         Le fichier d'entrée
-    annotateur : str, default="spacy"
+    annotateur : function(str) -> object
         Le moteur d'annotation à utiliser
     modele : str, default="fr_core_news_md"
         Le modèle que le moteur doit utiliser
@@ -97,7 +126,10 @@ def tei_ner(fichier, balise, annotateur, iterateur):
 
 
 def main(fichier, sortie, balise="p", annotateur="spacy", modele="fr_core_news_md"):
-    if pathlib.Path(fichier).samefile(sortie):
+    inputpath = pathlib.Path(fichier)
+    outputpath = pathlib.Path(sortie)
+
+    if outputpath.exists() and inputpath.samefile(outputpath):
         raise ValueError("Les fichiers d'entrée et de sortie sont identiques")
 
     loader = loaders.get(annotateur)
@@ -109,7 +141,9 @@ def main(fichier, sortie, balise="p", annotateur="spacy", modele="fr_core_news_m
     if iterator is None:
         raise ValueError(f"Pas d'itérateur d'entités pour {annotateur}")
 
-    tree = tei_ner(fichier, balise, loader(modele), iterator)
+    pipeline = loader(modele)
+    label_function = get_label_function(annotateur, pipeline)
+    tree = tei_ner(fichier, balise, label_function, iterator)
 
     with open(sortie, "w", encoding="utf-8") as output_stream:
         output_stream.write(
@@ -134,7 +168,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "-a",
         "--annotateur",
-        choices=("spacy",),
+        choices=("spacy", "flair"),
         default="spacy",
         help="L'anntateur (moteur d'annotation) à utiliser (défaut: spacy)"
     )
