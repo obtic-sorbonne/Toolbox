@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <title>Toolbox</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="{{ url_for('static', filename= 'style.css') }}">
+
+  <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="logo">
+      <h1>Toolbox</h1>
+  </div>
+  <nav>
+    <ul>
+      <li><a href="#1" class="active"><i class="fas fa-book-open"></i> <em>Corpus</em></a></li>
+      <li><a href="#2"><i class="fa-solid fa-magnifying-glass"></i> <em>Fouille de texte</em></a></li>
+      <li><a href="#3"><i class="fa-solid fa-chart-column"></i> <em>Visualisation</em></a></li>
+    </ul>
+  </nav>
+
+  <div class="content">
+
+      <h2>Corpus</h2>
+      <div class="tools">
+        <ul>
+          <li><i class="fa-solid fa-file-image"><a href="{{ url_for('numeriser') }}"></i>Numériser (OCR)</a></li>
+          <li><i class="fa-solid fa-file-circle-plus"></i><a href="{{ url_for('creer_corpus') }}">Créer un corpus (Wikisource)</a></li>
+          <li><i class="fa-solid fa-file-code"><a href="{{ url_for('conversion_xml') }}"></i>Conversion XML-TEI</a></li>
+          <li><i class="fa-solid fa-spell-check"></i><a href="#">Correction d'erreur</a></li>
+        </ul>
+      </div>
+  </div>
+</body>
+</html>
