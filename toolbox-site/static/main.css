@@ -20,11 +20,11 @@ nav {
   z-index: 100;
   height: 90%;
   left: 0;
-  width: 12%;
+  width: 15%;
   font-weight: 400;
 }
 nav em {
-	font-size: 20px;
+	font-size: 16px;
 	font-style:normal;
 	/*text-transform: uppercase;*/
 	display: block;
@@ -124,10 +124,10 @@ overflow: scroll;
 }
 
 .content h2{
-  margin-left: 4%;
+  margin-left: 6%;
   margin-top: 3%;
   color:#fff;
-  font-size: 36px;
+  font-size: 30px;
 }
 
 .tools{
@@ -143,7 +143,7 @@ overflow: scroll;
   margin:8px 0px;
   padding:20px;
   background-color: #F3D5BD;
-  width:420px;
+  width:410px;
   border-radius: 3px;
   text-align:center;
 }
@@ -154,19 +154,20 @@ overflow: scroll;
 .tools ul li a{
   text-decoration: none;
   padding:18px;
-  font-size:20px;
+  font-size:16px;
   color:#111C2D;
 }
 .tools ul li i{
-  font-size:30px;
+  font-size:20px;
   margin-right: 10px;
   float:left;
 }
+
 .outil{
   margin-right: 30%;
   margin-left: 10%;
   margin-top:50px;
-  font-size: 18px;
+  font-size: 13px;
 }
 .outil h3{
   text-align: center;
@@ -179,6 +180,7 @@ overflow: scroll;
   margin-top:30px;
   margin-bottom: 10px;
 }
+
 #wikiscraper{
   font-family: 'Roboto', sans-serif;
 }
@@ -200,12 +202,48 @@ button{
   font-size: 16px;
   border-radius: 4px;
 }
+
 button:hover{
   cursor: pointer;
 }
+
 #urlform textarea{
   width:70%;
+  padding:3px 5px;
 }
+
 #t2{
   height:700px;
+}
+
+#divform{
+  font-size:11px;
+  display: flex;
+}
+
+.column {
+  float: left;
+  width: 50%;
+}
+
+/* Clear floats after the columns */
+#divform:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+#divform input[type=text]{
+  width:52%;
+  padding:2px 3px;
+  margin: 4px 0;
+}
+
+fieldset{
+	margin:8px;
+	padding:4px 8px;
+}
+
+textarea{
+  padding:2px 3px;
 }

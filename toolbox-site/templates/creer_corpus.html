@@ -11,8 +11,9 @@
   <title>Toolbox</title>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename= 'main.css') }}">
 
+  <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
 </head>
 <body>
   <div class="logo">
@@ -31,17 +32,12 @@
       <h2>Corpus</h2>
       <div class="tools">
         <ul>
-          <li><i class="fa-solid fa-file-image"><a href="#t1"></i>Numériser (OCR)</a></li>
-          <li><i class="fa-solid fa-file-circle-plus"></i><a href="#t2">Créer un corpus (Wikisource)</a></li>
-          <li><i class="fa-solid fa-file-code"><a href="#t3"></i>Conversion XML-TEI</a></li>
-          <li><i class="fa-solid fa-spell-check"></i><a href="#t4">Correction d'erreur</a></li>
+          <li><i class="fa-solid fa-file-image"></i><a href="{{ url_for('numeriser') }}">Numériser (OCR)</a></li>
+          <li><i class="fa-solid fa-file-circle-plus"></i><a href="{{ url_for('creer_corpus') }}">Créer un corpus (Wikisource)</a></li>
+          <li><i class="fa-solid fa-file-code"></i><a href="{{ url_for('conversion_xml') }}">Conversion XML-TEI</a></li>
+          <li><i class="fa-solid fa-spell-check"></i><a href="#">Correction d'erreur</a></li>
         </ul>
       </div>
-
-    <div class="outil" id="t1">
-      <h3>Numériser (OCR)</h3>
-
-    </div>
 
 <!-- CREATION CORPUS -->
     <div class="outil" id="t2">
@@ -61,7 +57,7 @@
       <fieldset>
         <label for="nbtext">Nombre de textes</label>
         <span id="rangeValue">1</span>
-        <input class="range" type="range" name="nbtext" value="0" min="1" max="8" onChange="rangeSlide(this.value)" onmousemove="rangeSlide(this.value)"></Input>
+        <input class="range" type="range" name="nbtext" value="0" min="1" max="8" onChange="rangeSlide(this.value)" onmousemove="rangeSlide(this.value)"></input>
         <button class="button">Génerer corpus aléatoire</button>
       </fieldset>
     </form>
@@ -69,29 +65,14 @@
 
     <h4>A partir d'URL(s)</h4>
     <p>Copier ici les URLs des textes à collecter (une par ligne) : </p>
-    <form id="urlform" action="{{ url_for('scrape') }}" method="POST">
-    <textarea id="wiki-url-input" name="wiki-url-input" rows="8" placeholder="Coller ici l'URL du texte" spellcheck="false" onchange="showIcon('cleartext')">{% if request.form %}{{ request.form.get('scrape') }}{% endif %}</textarea>
+    <form id="urlform"  method="POST"> <!-- action="{{ url_for('scrape') }}" -->
+    <textarea id="wiki-url-input" name="wiki-url-input" rows="8" placeholder="Coller ici l'URL du texte" spellcheck="false" onchange="showIcon('cleartext')"></textarea>
     <span class="clear-icon" id="cleartext" onclick="removeText()"><i class="fas fa-times"></i></span>
     <button type="submit" class="button" style="display:block;">Télécharger texte</button>
     </form>
     <div id="random-wiki-res"></div>
   </div>
-
-
-    <div class="outil" id="t3">
-      <h3>Conversion XML-TEI</h3>
-      <p>L'outil ci-dessous permet de transformer un texte brut en format XML-TEI. Si les métadonnées ne sont pas présentes dans le document texte, il est possible de les spécifier dans le formulaire ci-dessous.</p>
-      <form>
-        <select id="metadata-selector">
-          <option value="titleStmt">titleStmt</option>
-          <option value="publicationStmt">publicationStmt</option>
-          <option value="sourceDesc">sourceDesc</option>
-        </select>
-      </form>
-    </div>
-
-  </div><!--fin CORPUS-->
-</div>
+  </div>
 
 
   <script type="text/javascript">
