@@ -21,8 +21,8 @@
   </div>
   <nav>
     <ul>
-      <li><a href="#1" class="active"><i class="fas fa-book-open"></i> <em>Corpus</em></a></li>
-      <li><a href="#2"><i class="fa-solid fa-magnifying-glass"></i> <em>Fouille de texte</em></a></li>
+      <li><a href="{{ url_for('outils_corpus') }}" class="active"><i class="fas fa-book-open"></i> <em>Corpus</em></a></li>
+      <li><a href="{{ url_for('outils_fouille') }}"><i class="fa-solid fa-magnifying-glass"></i> <em>Fouille de texte</em></a></li>
       <li><a href="#3"><i class="fa-solid fa-chart-column"></i> <em>Visualisation</em></a></li>
     </ul>
   </nav>
@@ -42,8 +42,8 @@
 
     <div class="outil" id="t3">
       <h3>Conversion XML-TEI</h3>
-      <p>L'outil ci-dessous permet de transformer un texte brut en format XML-TEI. Si les métadonnées ne sont pas présentes dans le document texte, il est possible de les spécifier dans le formulaire ci-dessous. Se référer au manuel TEI (<a href="https://tei-c.org/release/doc/tei-p5-doc/fr/html/ref-fileDesc.html#:~:text=Il%20fournit%20le%20titre%20et,dans%20l'en%2Dt%C3%AAte." target="_blank">section fileDesc</a>) pour plus d'information sur les différents champs de l'en-tête.</p>
-
+      <p>L'outil ci-dessous permet de transformer un texte brut en format XML-TEI. Il est nécessaire de spécifier les métadonnées dans le formulaire ci-dessous. Se référer au manuel TEI (<a href="https://tei-c.org/release/doc/tei-p5-doc/fr/html/ref-fileDesc.html#:~:text=Il%20fournit%20le%20titre%20et,dans%20l'en%2Dt%C3%AAte." target="_blank">section fileDesc</a>) pour plus d'information sur les différents champs de l'en-tête.</p>
+      <p>Le téléchargement du fichier XML-TEI généré démarrera automatiquement.</p>
       <div id="divform">
 
         <form action="/converter" id="metadata-form" method="post" enctype="multipart/form-data">

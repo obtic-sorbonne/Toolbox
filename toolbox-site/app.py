@@ -1,7 +1,12 @@
-import os
-from flask import Flask, flash, request, render_template, url_for, redirect, send_from_directory
+from flask import Flask, request, render_template, url_for, redirect, send_from_directory, Response, stream_with_context
 from werkzeug.utils import secure_filename
-
+import os
+from io import StringIO, BytesIO
+import random
+from bs4 import BeautifulSoup
+import urllib
+import urllib.request
+import re
 from lxml import etree
 
 UPLOAD_FOLDER = 'uploads'
@@ -24,6 +29,14 @@ app.add_url_rule("/uploads/<name>", endpoint="download_file", build_only=True)
 def index():
     return render_template('index.html')
 
+@app.route('/outils_corpus')
+def outils_corpus():
+	return render_template('corpus.html')
+
+@app.route('/outils_fouille')
+def outils_fouille():
+	return render_template('fouille_de_texte.html')
+
 @app.route('/numeriser')  
 def numeriser():
 	return render_template('numeriser.html')
@@ -32,11 +45,33 @@ def numeriser():
 def creer_corpus():
 	return render_template('creer_corpus.html')
 
+@app.route('/generate_corpus',  methods=["GET","POST"])
+@stream_with_context
+def generate_corpus():
+	if request.method == 'POST':
+		nb = int(request.form['nbtext'])
+		all_texts = generate_random_corpus(nb)
+		output_stream = StringIO()
+		output_stream.write('\n\n\n'.join(all_texts))
+		response = Response(output_stream.getvalue(), mimetype='text/plain',
+							headers={"Content-disposition": "attachment; filename=corpus_wikisource.txt"})
+		output_stream.seek(0)
+		output_stream.truncate(0)
+		return response
+	return render_template('/creer_corpus.html')
+
+@app.route('/corpus_from_url',  methods=["GET","POST"])
+@stream_with_context
+def corpus_from_url():
+	return render_template('creer_corpus.html')
+
+
 @app.route('/conversion_xml')
 def conversion_xml():
 	return render_template('conversion_xml.html')
 	
 @app.route('/converter', methods=["GET", "POST"])
+@stream_with_context
 def xmlconverter():
 	if request.method == 'POST':
 		fields = {}
@@ -52,22 +87,35 @@ def xmlconverter():
 		filename = secure_filename(f.filename)
 		path_to_file = os.path.join(app.config['UPLOAD_FOLDER'], filename)
 		f.save(path_to_file)
+		# Validating file format
 		try:
 			with open(path_to_file, "r") as f:
 				for l in f:
 					break;
-			outputname = txt_to_xml(path_to_file, fields)
-			print(outputname)
+
+			# Returning xml string
+			root = txt_to_xml(path_to_file, fields)
+
+			# Writing in stream
+			output_stream = BytesIO()
+			output = os.path.splitext(filename)[0] + '.xml'
+			etree.ElementTree(root).write(output_stream, pretty_print=True, xml_declaration=True, encoding="utf-8")
+			response = Response(output_stream.getvalue(), mimetype='application/xml',
+								headers={"Content-disposition": "attachment; filename=" + output})
+			output_stream.seek(0)
+			output_stream.truncate(0)
+			
 		except UnicodeDecodeError:
 			return 'format de fichier incorrect'
 
-		return 'upload successful' #redirect(url_for(''))
+		return response
 
 	return render_template("/conversion_xml")
 
-@app.route('/uploads/<name>')
-def download_file(name):
-    return send_from_directory(app.config["UPLOAD_FOLDER"], name)
+# Change if using middleware or HTTP server
+#@app.route('/uploads/<name>')
+#def download_file(name):
+#    return send_from_directory(app.config["UPLOAD_FOLDER"], name)
 
 
 #-----------------------------------------------------------------
@@ -134,7 +182,7 @@ def txt_to_xml(filename, fields):
 		p = etree.Element('p')
 		p.text = elem
 		sourceDesc.append(p)
-		
+
 	# Header
 	fileDesc.append(titleStmt)
 	fileDesc.append(editionStmt)
@@ -145,7 +193,7 @@ def txt_to_xml(filename, fields):
 
 	# Text
 	text = etree.Element("text")
-	
+
 	with open(filename, "r") as f:
 		for line in f:
 			ptext = etree.Element('p')
@@ -153,12 +201,42 @@ def txt_to_xml(filename, fields):
 			text.append(ptext)
 
 	root.append(text)
-
-	output = os.path.splitext(filename)[0] + '.xml'
-	etree.ElementTree(root).write(output, pretty_print=True, xml_declaration=True, encoding="utf-8")
-	return output
+	return root
 #-----------------------------------------------------------------
+def generate_random_corpus(nb):
+	# Read list of urls
+	with open("wikisource_bib.txt", 'r') as bib:
+		random_texts = bib.read().splitlines()
 
+	# Pick random urls
+	urls = random.sample(random_texts, nb)
+	all_texts = []
+
+	for text_url in urls:
+		location = "".join(["https://fr.wikisource.org/wiki/", text_url])
+		try:
+			page = urllib.request.urlopen(location)
+		except Exception as e:
+			with open('pb_url.log', 'a') as err_log:
+				err_log.write("No server is associated with the following page:" + location + '\n')
+				err_log.write(e)
+			continue
+
+		soup = BeautifulSoup(page, 'html.parser')
+		print(location)
+		text = soup.findAll("div", attrs={'class': 'prp-pages-output'})
+
+		if len(text) == 0:
+			print("This does not appear to be part of the text (no prp-pages-output tag at this location).")
+			with open('pb_url.log', 'a') as err_log:
+				err_log.write(text_url)
+		else:
+			# Remove end of line inside sentence
+			clean_text = re.sub("[^\.:!?»[A-Z]]\n", ' ', text[0].text)
+			all_texts.append(clean_text)
+
+	return all_texts
+#-----------------------------------------------------------------
 
 if __name__ == '__main__':
    app.debug = True

@@ -21,23 +21,27 @@
   </div>
   <nav>
     <ul>
-      <li><a href="{{ url_for('outils_corpus') }}" class="active"><i class="fas fa-book-open"></i> <em>Corpus</em></a></li>
-      <li><a href="{{ url_for('outils_fouille') }}"><i class="fa-solid fa-magnifying-glass"></i> <em>Fouille de texte</em></a></li>
+      <li><a href="{{ url_for('outils_corpus') }}"><i class="fas fa-book-open"></i> <em>Corpus</em></a></li>
+      <li><a href="{{ url_for('outils_fouille') }}" class="active"><i class="fa-solid fa-magnifying-glass"></i> <em>Fouille de texte</em></a></li>
       <li><a href="#3"><i class="fa-solid fa-chart-column"></i> <em>Visualisation</em></a></li>
     </ul>
   </nav>
 
   <div class="content">
 
-      <h2>Corpus</h2>
+      <h2>Fouille de texte</h2>
       <div class="tools">
         <ul>
-          <li><i class="fa-solid fa-file-image"><a href="{{ url_for('numeriser') }}"></i>Numériser (OCR)</a></li>
-          <li><i class="fa-solid fa-file-circle-plus"></i><a href="{{ url_for('creer_corpus') }}">Créer un corpus (Wikisource)</a></li>
-          <li><i class="fa-solid fa-file-code"><a href="{{ url_for('conversion_xml') }}"></i>Conversion XML-TEI</a></li>
-          <li><i class="fa-solid fa-spell-check"></i><a href="#">Correction d'erreur</a></li>
+          <li><i class="fa-solid fa-address-card"></i><a href="#ner">Détection d'entités nommées</a></li>
         </ul>
       </div>
-  </div>
+
+<!-- OUTILS DE NER-->
+    <div class="outil" id="ner">
+      <h3>Détection d'entités nommées</h3>
+
+    </div>
+  <script type="text/javascript">
+  </script>
 </body>
 </html>

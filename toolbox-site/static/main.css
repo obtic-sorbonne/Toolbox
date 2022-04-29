@@ -141,7 +141,7 @@ overflow: scroll;
 
 .tools ul li{
   margin:8px 0px;
-  padding:20px;
+  padding:18px;
   background-color: #F3D5BD;
   width:410px;
   border-radius: 3px;
@@ -181,6 +181,10 @@ overflow: scroll;
   margin-bottom: 10px;
 }
 
+input[type=text]{
+  padding:2px 3px;
+}
+
 #wikiscraper{
   font-family: 'Roboto', sans-serif;
 }
@@ -199,7 +203,7 @@ button{
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 16px;
+  font-size: 14px;
   border-radius: 4px;
 }
 
@@ -210,6 +214,22 @@ button:hover{
 #urlform textarea{
   width:70%;
   padding:3px 5px;
+}
+
+#urlform input[type=text]{
+	margin:8px;
+	width:60%;
+}
+#urlform .addbutton{
+  padding:8px;
+  background-color:#111C2D;
+  color:#fff;
+  border-radius:3px;
+  display:inline-block;
+  margin:8px;
+}
+.addbutton:hover{
+  cursor:pointer;
 }
 
 #t2{
@@ -235,7 +255,6 @@ button:hover{
 
 #divform input[type=text]{
   width:52%;
-  padding:2px 3px;
   margin: 4px 0;
 }
 
