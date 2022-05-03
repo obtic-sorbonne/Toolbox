@@ -45,6 +45,10 @@ def numeriser():
 def creer_corpus():
 	return render_template('creer_corpus.html')
 
+@app.route('/entites_nommees')
+def entites_nommees():
+	return render_template('entites_nommees.html')
+
 @app.route('/generate_corpus',  methods=["GET","POST"])
 @stream_with_context
 def generate_corpus():
@@ -237,6 +241,36 @@ def generate_random_corpus(nb):
 
 	return all_texts
 #-----------------------------------------------------------------
+
+
+@app.route('/named_entity_recognition', methods=["POST"])
+@stream_with_context
+def named_entity_recognition():
+	from tei_ner import tei_ner_params
+	from lxml import etree
+	f = request.files['file']
+	balise_racine = request.form['balise_racine']
+	balise_parcours = request.form['balise_parcours']
+	encodage = request.form['encodage']
+	moteur_REN = request.form['moteur_REN']
+	modele_REN = request.form['modele_REN']
+	try:
+		contenu = f.read()
+	finally: # ensure file is closed
+		f.close()
+	root = tei_ner_params(
+        contenu, balise_racine, balise_parcours, moteur_REN, modele_REN, encodage=encodage
+    )
+	# Writing in stream
+	output_stream = BytesIO()
+	output = f.filename
+	root.write(output_stream, pretty_print=True, xml_declaration=True, encoding="utf-8")
+	response = Response(output_stream.getvalue(), mimetype='application/xml',
+						headers={"Content-disposition": "attachment; filename=" + output})
+	output_stream.seek(0)
+	output_stream.truncate(0)
+	return response
+
 
 if __name__ == '__main__':
    app.debug = True
