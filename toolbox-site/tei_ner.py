@@ -10,9 +10,9 @@
     L'utilisation de cette balise <Entity> rend utilisable la sortie de ce
     script dans la plateforme Ariane.
 
-    ATTENTION : ce script détuit potentiellement une partie du formattage XML du
-    fichier. En effet, lorsque le contenu textuel est récupéré, tout formattage
-    potentiellement présent dans le texte sera perdu.
+    ATTENTION : ce script détruit détruit la structuration et le formattage XML
+    à l'intérieur des balises parcourues. En effet, lorsque le contenu textuel
+    est récupéré, tout formattage présent dans le texte est ignoré.
 
 exemples d'utilisation:
     python ./tei_ner.py -h
@@ -70,6 +70,7 @@ entity_iterators = {
 
 
 def tei_ner_params(contenu, racine, balise, moteur, modele, encodage="utf-8"):
+    moteur = moteur.lower()
     loader = loaders.get(moteur)
     iterator = entity_iterators.get(moteur)
 

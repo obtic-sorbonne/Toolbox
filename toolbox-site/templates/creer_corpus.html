@@ -21,8 +21,8 @@
   </div>
   <nav>
     <ul>
-      <li><a href="#1" class="active"><i class="fas fa-book-open"></i> <em>Corpus</em></a></li>
-      <li><a href="#2"><i class="fa-solid fa-magnifying-glass"></i> <em>Fouille de texte</em></a></li>
+      <li><a href="{{ url_for('outils_corpus') }}" class="active"><i class="fas fa-book-open"></i> <em>Corpus</em></a></li>
+      <li><a href="{{ url_for('outils_fouille') }}"><i class="fa-solid fa-magnifying-glass"></i> <em>Fouille de texte</em></a></li>
       <li><a href="#3"><i class="fa-solid fa-chart-column"></i> <em>Visualisation</em></a></li>
     </ul>
   </nav>
@@ -53,31 +53,46 @@
     <h4>Création rapide</h4>
     <p>Cette option permet de générer un corpus aléatoire parmi les œuvres en français de Wikisource.</p>
 
-    <form id="wikiscraper">
+    <form id="wikiscraper" method="POST" action="/generate_corpus">
       <fieldset>
         <label for="nbtext">Nombre de textes</label>
-        <span id="rangeValue">1</span>
+        <span id="rangeValue" name="rangeValue">1</span>
         <input class="range" type="range" name="nbtext" value="0" min="1" max="8" onChange="rangeSlide(this.value)" onmousemove="rangeSlide(this.value)"></input>
         <button class="button">Génerer corpus aléatoire</button>
       </fieldset>
     </form>
 
-
+    <div>
     <h4>A partir d'URL(s)</h4>
-    <p>Copier ici les URLs des textes à collecter (une par ligne) : </p>
-    <form id="urlform"  method="POST"> <!-- action="{{ url_for('scrape') }}" -->
-    <textarea id="wiki-url-input" name="wiki-url-input" rows="8" placeholder="Coller ici l'URL du texte" spellcheck="false" onchange="showIcon('cleartext')"></textarea>
-    <span class="clear-icon" id="cleartext" onclick="removeText()"><i class="fas fa-times"></i></span>
-    <button type="submit" class="button" style="display:block;">Télécharger texte</button>
+    <p>Copier ici les URLs des textes à collecter. Il est possible de collecter un texte intégral à partir d'un sommaire [<a href="https://fr.wikisource.org/wiki/Indiana" target="_blank">exemple</a>]. Dans ce cas, cocher la case Sommaire en face de l'Url indiquée.</p>
+    <form id="urlform"  method="POST" action="/corpus_from_urls">
+    <input type="hidden" value="1" id="nb_inputs">
+    <div id="new_inputs"></div>
+    <input type="text" name="url_1"></input> <input type="checkbox" name="s1"><label for="s1">Sommaire</label></input>
+    <span class="addbutton" onclick="addInput()"><i class="fa-solid fa-circle-plus" style="margin-right:3px;"></i>Ajouter URL</span>
+    <button type="submit" class="button" style="display:block;margin:auto;">Collecter corpus</button>
     </form>
-    <div id="random-wiki-res"></div>
+    </div>
   </div>
   </div>
 
 
   <script type="text/javascript">
+      // Range button
       function rangeSlide(value) {
           document.getElementById('rangeValue').innerHTML = value;
+      }
+
+      function addInput(){
+        var nb_input = document.getElementById('nb_inputs').value + 1;
+        var new_input = '<input type="text" name="url_"' + nb_input + '">';
+        var new_check = '<input type="checkbox" name="s"' + nb_input + '">';
+        var new_label = '<label for="s"' + nb_input + '">Sommaire</label>';
+
+        document.getElementById('new_inputs').innerHTML += new_input;
+        document.getElementById('new_inputs').innerHTML += new_check;
+        document.getElementById('new_inputs').innerHTML += new_label;
+        document.getElementById('nb_inputs').value = nb_input;
       }
   </script>
 </body>
