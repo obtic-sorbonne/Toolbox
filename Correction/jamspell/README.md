@@ -5,7 +5,7 @@
 
 Librairie initialement écrite en **C++**, mais fonctionnelle également en **Python**.
 
-<u>Prérequis</u> : installer les *bindings* `swig`
+<ins>Prérequis</ins> : installer les *bindings* `swig`
 * compilateur d'interface qui connecte des programmes écrits en C++ avec d'autres langages (en l'occurrence, avec Python).
 
 Instructions d'installation en local -> [GitHub](https://github.com/bakwc/JamSpell/#usage).
