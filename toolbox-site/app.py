@@ -8,7 +8,8 @@ import urllib
 import urllib.request
 import re
 from lxml import etree
-
+import csv
+import sys
 UPLOAD_FOLDER = 'uploads'
 
 app = Flask(__name__)
@@ -258,9 +259,7 @@ def named_entity_recognition():
 		contenu = f.read()
 	finally: # ensure file is closed
 		f.close()
-	root = tei_ner_params(
-        contenu, balise_racine, balise_parcours, moteur_REN, modele_REN, encodage=encodage
-    )
+	root = tei_ner_params(contenu, balise_racine, balise_parcours, moteur_REN, modele_REN, encodage=encodage)
 	# Writing in stream
 	output_stream = BytesIO()
 	output = f.filename
@@ -275,3 +274,79 @@ def named_entity_recognition():
 if __name__ == '__main__':
    app.debug = True
    app.run()
+
+
+
+#-----------------------------------------------------------------
+@app.route('/bios_converter', methods=["GET", "POST"])
+@stream_with_context
+def biosconverter():
+    fields = {}
+    if request.method == 'POST':
+        biosfile_a = request.files['file1']
+        biosfile_b = request.files['file2']
+        fields['annotator_a'] = request.form['annotator_a']
+        fields['annotator_b'] = request.form['annotator_b']
+        map_tag = {
+            'PER': 0,
+            'LOC': 1,
+            'MISC': 2,
+            'O': 4
+        }
+        print('This is error output', file=sys.stderr)
+        annotations = []
+        csv_header = ['token']
+        csv_header.append(fields['annotator_a'])
+        csv_header.append(fields['annotator_b'])
+        annotation = []
+        filename_extensions = ("_a", "_b")
+        extension_address = 0
+        for f in [biosfile_a, biosfile_b]:
+            
+
+            filename = secure_filename(f.filename)
+            filename.replace(".tsv", "")
+            filename = filename + filename_extensions[extension_address] + ".tsv"
+
+            path_to_file = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            extension_address = extension_address + 1
+            f.save(path_to_file)
+
+
+            with open(path_to_file, "r") as fin:
+                print(path_to_file, file=sys.stderr)
+                for line in fin:
+
+                    line = line.strip()
+                    if not line:
+                        continue
+
+                    annotation.append(line.split('\t'))
+                annotations.append(annotation)
+
+        output = []
+        for i in range(0, len(annotations[1])):
+            
+            line = []
+            for y in range(0, len(annotations)):
+                if y == 0:
+                    # on ajoute le token une seule fois
+                    line.append(annotations[y][i][0])
+
+                # ajout du tag
+                tag = re.sub('[BIES]-', '', annotations[y][i][1])
+                line.append(map_tag[tag])
+            output.append(line)
+        
+        fout = StringIO()
+        csv_writer = csv.writer(fout, delimiter=';')
+        csv_writer.writerow(csv_header)
+        csv_writer.writerows(output)
+        response = Response(fout.getvalue(), mimetype='application/xml',
+                            headers={"Content-disposition": "attachment; filename=outfile.tsv"})
+        fout.seek(0)
+        fout.truncate(0)
+
+        return response
+
+    return render_template("/conversion_xml")

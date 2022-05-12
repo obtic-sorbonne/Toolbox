@@ -34,7 +34,7 @@
         <ul>
           <li><i class="fa-solid fa-file-image"></i><a href="{{ url_for('numeriser') }}">Numériser (OCR)</a></li>
           <li><i class="fa-solid fa-file-circle-plus"></i><a href="{{ url_for('creer_corpus') }}">Créer un corpus (Wikisource)</a></li>
-          <li><i class="fa-solid fa-file-code"></i><a href="{{ url_for('conversion_xml') }}">Conversion XML-TEI</a></li>
+          <li><i class="fa-solid fa-file-code"></i><a href="{{ url_for('conversion_xml') }}">Conversion</a></li>
           <li><i class="fa-solid fa-spell-check"></i><a href="#">Correction d'erreur</a></li>
         </ul>
       </div>
@@ -83,9 +83,65 @@
           </form>
       </div>
     </div>
+<div class="outil" id="TM1">
+  <h3>Convertir output Brat à CSV</h3>
+  <p>Ce script prend les annotations dans le format standard BIOS et les met en corrélation par jeton de sorte que l'accord inter-annotateur puisse être calculé. Pour calculer l'accord inter-annotateur, voir la section "Détection des entités nommées" sous "Fouille de texte".</p>
+  <p>Le téléchargement du fichier CSV généré démarrera automatiquement.</p>
+  <div id="divform">
+    <form action="/bios_converter" id="metadata-form" method="post" enctype="multipart/form-data">
+      <div id="div-metadata" class="column">
+      <fieldset>
+	      <legend>Annotateur A</legend>
+    	  <p>Saisissez le nom ou une étiquette pour l'ensemble de balises du premier annotateur.</p>
+		  <label for="annotator_a" style="display:inline-block;width:102px;">Annotator A étiquette</label>
+			<input type="text" name="annotator_a" id="annotator_a" required></p>
+    	  <label for="annotator_a" style="display:inline-block;width:102px;">Chargement du fichier A</label>
+	      <input type="file" id="raw-text-file" name="file1" accept=".tsv">
+      </fieldset>
+      </div>
+	  
+      <div id="div-metadata" class="column">
+      <fieldset>
+	      <legend>Annotateur B</legend>
+    	  <p>Saisissez le nom ou une étiquette pour l'ensemble de balises du deuxieme annotateur.</p>
+		  <label for="annotator_b" style="display:inline-block;width:102px;">Annotator B étiquette</label>
+			<input type="text" name="annotator_b" id="annotator_b" required></p>
+    	  <label for="annotator_b" style="display:inline-block;width:102px;">Chargement du fichier B</label>
+	      <input type="file" id="raw-text-file" name="file2" accept=".tsv">
+      </fieldset>
+      </div>
+  </div>
+          <button style="display:block;margin:auto;margin-top:20px;">Convertir en CSV</button>
+</form>
+</div>
 
   </div><!--fin CORPUS-->
 </div>
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
