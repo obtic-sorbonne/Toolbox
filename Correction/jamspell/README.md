@@ -1,5 +1,8 @@
 # Correction des sorties OCR
 ## [`jamspell`](https://github.com/bakwc/JamSpell/)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/obtic-scai/Toolbox/blob/dev/Correction/jamspell/jamspell_xml_txt.ipynb)
+
+https://github.com/obtic-scai/Toolbox/blob/dev/Correction/jamspell/jamspell_xml_txt.ipynb
 
 <!-- Le texte brut issu de l'océrisation peut être corrigé avec la librairie de correction contextuelle libre et *open source* ([`jamspell`](https://github.com/bakwc/JamSpell/)). -->
 
