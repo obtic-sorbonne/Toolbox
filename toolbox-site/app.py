@@ -41,6 +41,10 @@ def outils_corpus():
 @app.route('/outils_fouille')
 def outils_fouille():
 	return render_template('layouts/fouille_de_texte.html')
+	
+@app.route('/outils_visualisation')
+def outils_visualisation():
+	return render_template('layouts/visualisation.html')
 
 @app.route('/numeriser')  
 def numeriser():
