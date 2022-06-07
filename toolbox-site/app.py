@@ -2,6 +2,7 @@ from flask import Flask, request, render_template, url_for, redirect, send_from_
 from werkzeug.utils import secure_filename
 import os
 from io import StringIO, BytesIO
+import string
 import random
 from bs4 import BeautifulSoup
 import urllib
@@ -10,6 +11,9 @@ import re
 from lxml import etree
 import csv
 import sys
+import shutil
+import subprocess
+import glob
 UPLOAD_FOLDER = 'uploads'
 
 app = Flask(__name__)
@@ -32,15 +36,97 @@ def index():
 
 @app.route('/outils_corpus')
 def outils_corpus():
-	return render_template('corpus.html')
+	return render_template('layouts/corpus.html')
 
 @app.route('/outils_fouille')
 def outils_fouille():
-	return render_template('fouille_de_texte.html')
+	return render_template('layouts/fouille_de_texte.html')
 
 @app.route('/numeriser')  
 def numeriser():
-	return render_template('numeriser.html')
+	return render_template('layouts/numeriser.html')
+	
+#-----------------------------------------------------------------
+# NUMERISATION TESSERACT
+#-----------------------------------------------------------------
+@app.route('/run_tesseract',  methods=["GET","POST"])
+@stream_with_context
+def run_tesseract():
+	if request.method == 'POST':
+		uploaded_files = request.files.getlist("tessfiles")
+		model = request.form['tessmodel']
+		
+		# Nom de dossier aléatoire pour le résultat de la requête
+		rand_name =  'ocr_' + ''.join((random.choice(string.ascii_lowercase) for x in range(5)))
+		result_path = os.path.join(app.config['UPLOAD_FOLDER'], rand_name)
+		os.mkdir(result_path)
+		
+		for f in uploaded_files:
+			filename, file_extension = os.path.splitext(f.filename)
+			print(filename)
+			print(file_extension)
+			output_name = filename + '.txt'
+			#------------------------------------------------------
+			# Fichier pdf
+			#------------------------------------------------------
+			# A FAIRE : le traitement des gros fichiers doit être parallélisé
+			if file_extension == ".pdf":
+				# Créer un dossier pour stocker l'ensemble des images
+				directory = filename + '_temp'
+				print(directory)
+				directory_path = os.path.join(app.config['UPLOAD_FOLDER'], directory)
+				
+				try:
+					os.mkdir(directory_path)
+				except FileExistsError:
+					pass
+
+				# Sauvegarde du PDF
+				path_to_file = os.path.join(directory_path, secure_filename(f.filename))
+				f.save(path_to_file)
+				
+				# Conversion en PNG
+				subprocess.run(['pdftoppm', '-r', '180', path_to_file, os.path.join(directory_path, filename), '-png'])	# Bash : pdftoppm -r 180 fichier.pdf fichier -png
+				
+				# OCRisation
+				png_list = glob.glob(directory_path + '/*.png')
+				final_output = ""
+				
+				if len(png_list) > 1:
+					png_list.sort(key=lambda f: int(re.sub('\D', '', f)))
+				
+				for png_file in png_list:
+					output_txt = os.path.splitext(png_file)[0]
+					subprocess.run(['tesseract', '-l', model, png_file, output_txt])
+					
+					with open(output_txt + '.txt', 'r') as ftxt:
+						final_output += ftxt.read()
+						final_output += '\n\n'
+				
+				# Ecriture du résultat
+				with open(os.path.join(result_path, filename + '.txt'), 'w') as out:
+					out.write(final_output)
+				
+		# ZIP le dossier résultat
+		shutil.make_archive(result_path, 'zip', result_path)
+		
+		output_stream = BytesIO()
+		with open(result_path + '.zip', 'rb') as res:
+			content = res.read()
+
+		output_stream.write(content)
+		response = Response(output_stream.getvalue(), mimetype='application/zip',
+							headers={"Content-disposition": "attachment; filename=" + rand_name + '.zip'})
+		output_stream.seek(0)
+		output_stream.truncate(0)
+		
+		# Nettoie le dossier de travail
+		shutil.rmtree(directory_path)
+		shutil.rmtree(result_path)
+		
+		return response
+
+	return render_template('layouts/numeriser.html')
 
 @app.route('/creer_corpus')
 def creer_corpus():
@@ -350,3 +436,16 @@ def biosconverter():
         return response
 
     return render_template("/conversion_xml")
+
+
+#-----------------------------------------------------------------
+# Utils
+#-----------------------------------------------------------------
+"""from PIL import Image
+
+def isImg(filename):
+	try:
+    	im = Image.open(filename)
+    	return True
+    except IOError:
+    	return False"""
