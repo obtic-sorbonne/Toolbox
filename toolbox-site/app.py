@@ -165,7 +165,7 @@ def corpus_from_url():
 def conversion_xml():
 	return render_template('conversion_xml.html')
 	
-@app.route('/converter', methods=["GET", "POST"])
+@app.route('/xmlconverter', methods=["GET", "POST"])
 @stream_with_context
 def xmlconverter():
 	if request.method == 'POST':
