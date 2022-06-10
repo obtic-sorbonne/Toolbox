@@ -37,6 +37,7 @@ app.add_url_rule("/uploads/<name>", endpoint="download_file", build_only=True)
 # ROUTES
 #-----------------------------------------------------------------
 @app.route('/')
+@app.route('/index')
 def index():
     return render_template('index.html')
 
@@ -47,15 +48,15 @@ def outils_corpus():
 @app.route('/outils_fouille')
 def outils_fouille():
 	return render_template('layouts/fouille_de_texte.html')
-	
+
 @app.route('/outils_visualisation')
 def outils_visualisation():
 	return render_template('layouts/visualisation.html')
 
-@app.route('/numeriser')  
+@app.route('/numeriser')
 def numeriser():
 	return render_template('layouts/numeriser.html')
-	
+
 #-----------------------------------------------------------------
 # NUMERISATION TESSERACT
 #-----------------------------------------------------------------
@@ -65,12 +66,12 @@ def run_tesseract():
 	if request.method == 'POST':
 		uploaded_files = request.files.getlist("tessfiles")
 		model = request.form['tessmodel']
-		
+
 		# Nom de dossier aléatoire pour le résultat de la requête
 		rand_name =  'ocr_' + ''.join((random.choice(string.ascii_lowercase) for x in range(5)))
 		result_path = ROOT_FOLDER / os.path.join(app.config['UPLOAD_FOLDER'], rand_name)
 		os.mkdir(result_path)
-		
+
 		for f in uploaded_files:
 			filename, file_extension = os.path.splitext(f.filename)
 			print(filename)
@@ -92,32 +93,32 @@ def run_tesseract():
 				# Sauvegarde du PDF
 				path_to_file = ROOT_FOLDER / os.path.join(directory_path, secure_filename(f.filename))
 				f.save(path_to_file)
-				
+
 				# Conversion en PNG
 				subprocess.run(['pdftoppm', '-r', '180', path_to_file, os.path.join(directory_path, filename), '-png'])	# Bash : pdftoppm -r 180 fichier.pdf fichier -png
-				
+
 				# OCRisation
 				png_list = glob.glob(str(directory_path) + '/*.png')
 				final_output = ""
-				
+
 				if len(png_list) > 1:
 					png_list.sort(key=lambda f: int(re.sub('\D', '', f)))
-				
+
 				for png_file in png_list:
 					output_txt = os.path.splitext(png_file)[0]
 					subprocess.run(['tesseract', '-l', model, png_file, output_txt])
-					
+
 					with open(output_txt + '.txt', 'r', encoding="utf-8") as ftxt:
 						final_output += ftxt.read()
 						final_output += '\n\n'
-				
+
 				# Ecriture du résultat
 				with open(ROOT_FOLDER / os.path.join(result_path, filename + '.txt'), 'w', encoding="utf-8") as out:
 					out.write(final_output)
-				
+
 		# ZIP le dossier résultat
 		shutil.make_archive(result_path, 'zip', result_path)
-		
+
 		output_stream = BytesIO()
 		with open(str(result_path) + '.zip', 'rb') as res:
 			content = res.read()
@@ -127,11 +128,11 @@ def run_tesseract():
 							headers={"Content-disposition": "attachment; filename=" + rand_name + '.zip'})
 		output_stream.seek(0)
 		output_stream.truncate(0)
-		
+
 		# Nettoie le dossier de travail
 		shutil.rmtree(directory_path)
 		shutil.rmtree(result_path)
-		
+
 		return response
 
 	return render_template('layouts/numeriser.html')
@@ -172,7 +173,7 @@ def corpus_from_url():
 @app.route('/conversion_xml')
 def conversion_xml():
 	return render_template('conversion_xml.html')
-	
+
 @app.route('/xmlconverter', methods=["GET", "POST"])
 @stream_with_context
 def xmlconverter():
@@ -207,7 +208,7 @@ def xmlconverter():
 								headers={"Content-disposition": "attachment; filename=" + output})
 			output_stream.seek(0)
 			output_stream.truncate(0)
-			
+
 		except UnicodeDecodeError:
 			return 'format de fichier incorrect'
 
@@ -307,7 +308,7 @@ def txt_to_xml(filename, fields):
 	return root
 #-----------------------------------------------------------------
 def generate_random_corpus(nb):
-	
+
 	# Read list of urls
 	with open(ROOT_FOLDER / 'static/wikisource_bib.txt', 'r') as bib:
 		random_texts = bib.read().splitlines()
@@ -394,7 +395,7 @@ def bios_converter():
         filename_extensions = ("_a", "_b")
         extension_address = 0
         for f in [biosfile_a, biosfile_b]:
-            
+
 
             filename = secure_filename(f.filename)
             filename.replace(".tsv", "")
@@ -418,7 +419,7 @@ def bios_converter():
 
         output = []
         for i in range(0, len(annotations[1])):
-            
+
             line = []
             for y in range(0, len(annotations)):
                 if y == 0:
@@ -429,7 +430,7 @@ def bios_converter():
                 tag = re.sub('[BIES]-', '', annotations[y][i][1])
                 line.append(map_tag[tag])
             output.append(line)
-        
+
         fout = StringIO()
         csv_writer = csv.writer(fout, delimiter=';')
         csv_writer.writerow(csv_header)
