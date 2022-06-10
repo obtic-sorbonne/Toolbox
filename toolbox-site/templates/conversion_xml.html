@@ -9,7 +9,7 @@
       <p>Le téléchargement du fichier XML-TEI généré démarrera automatiquement.</p>
       <div id="divform">
 
-        <form action="/xmlconverter" id="metadata-form" method="post" enctype="multipart/form-data">
+        <form action="{{ url_for('xmlconverter') }}" id="metadata-form" method="post" enctype="multipart/form-data">
         <div id="div-metadata" class="column">
           <fieldset>
           <legend>Métadonnées</legend>
@@ -51,7 +51,7 @@
   <p>Ce script prend les annotations dans le format standard BIOS et les met en corrélation par jeton de sorte que l'accord inter-annotateur puisse être calculé. Pour calculer l'accord inter-annotateur, voir la section "Détection des entités nommées" sous "Fouille de texte".</p>
   <p>Le téléchargement du fichier CSV généré démarrera automatiquement.</p>
   <div id="divform">
-    <form action="/bios_converter" id="metadata-form" method="post" enctype="multipart/form-data">
+    <form action="{{ url_for('bios_converter') }}" id="metadata-form" method="post" enctype="multipart/form-data">
       <div id="div-metadata" class="column">
       <fieldset>
 	      <legend>Annotateur A</legend>

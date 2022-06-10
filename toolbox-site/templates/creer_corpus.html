@@ -17,7 +17,7 @@
     <h4>Création rapide</h4>
     <p>Cette option permet de générer un corpus aléatoire parmi les œuvres en français de Wikisource.</p>
 
-    <form id="wikiscraper" method="POST" action="/generate_corpus">
+    <form id="wikiscraper" method="POST" action="{{ url_for('generate_corpus') }}">
       <fieldset>
         <label for="nbtext">Nombre de textes</label>
         <span id="rangeValue" name="rangeValue">1</span>

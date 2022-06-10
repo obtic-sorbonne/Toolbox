@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# -*- coding:utf-8 -*-
+
 from flask import Flask, request, render_template, url_for, redirect, send_from_directory, Response, stream_with_context
 from werkzeug.utils import secure_filename
 import os
@@ -14,13 +17,16 @@ import sys
 import shutil
 import subprocess
 import glob
+from pathlib import Path
+
 UPLOAD_FOLDER = 'uploads'
+ROOT_FOLDER = Path(__file__).parent.absolute()
 
 app = Flask(__name__)
 
 # App config
 app.config['SESSION_TYPE'] = 'filesystem'
-app.config['SECRET_KEY'] = 'pakisqa'
+#app.config['SECRET_KEY'] = 'pakisqa'
 
 app.config['MAX_CONTENT_LENGTH'] = 3 * 1024 * 1024 # Limit file upload to 3MB
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -62,7 +68,7 @@ def run_tesseract():
 		
 		# Nom de dossier aléatoire pour le résultat de la requête
 		rand_name =  'ocr_' + ''.join((random.choice(string.ascii_lowercase) for x in range(5)))
-		result_path = os.path.join(app.config['UPLOAD_FOLDER'], rand_name)
+		result_path = ROOT_FOLDER / os.path.join(app.config['UPLOAD_FOLDER'], rand_name)
 		os.mkdir(result_path)
 		
 		for f in uploaded_files:
@@ -77,23 +83,21 @@ def run_tesseract():
 			if file_extension == ".pdf":
 				# Créer un dossier pour stocker l'ensemble des images
 				directory = filename + '_temp'
-				print(directory)
-				directory_path = os.path.join(app.config['UPLOAD_FOLDER'], directory)
-				
+				directory_path = ROOT_FOLDER / os.path.join(app.config['UPLOAD_FOLDER'], directory)
 				try:
 					os.mkdir(directory_path)
 				except FileExistsError:
 					pass
 
 				# Sauvegarde du PDF
-				path_to_file = os.path.join(directory_path, secure_filename(f.filename))
+				path_to_file = ROOT_FOLDER / os.path.join(directory_path, secure_filename(f.filename))
 				f.save(path_to_file)
 				
 				# Conversion en PNG
 				subprocess.run(['pdftoppm', '-r', '180', path_to_file, os.path.join(directory_path, filename), '-png'])	# Bash : pdftoppm -r 180 fichier.pdf fichier -png
 				
 				# OCRisation
-				png_list = glob.glob(directory_path + '/*.png')
+				png_list = glob.glob(str(directory_path) + '/*.png')
 				final_output = ""
 				
 				if len(png_list) > 1:
@@ -103,19 +107,19 @@ def run_tesseract():
 					output_txt = os.path.splitext(png_file)[0]
 					subprocess.run(['tesseract', '-l', model, png_file, output_txt])
 					
-					with open(output_txt + '.txt', 'r') as ftxt:
+					with open(output_txt + '.txt', 'r', encoding="utf-8") as ftxt:
 						final_output += ftxt.read()
 						final_output += '\n\n'
 				
 				# Ecriture du résultat
-				with open(os.path.join(result_path, filename + '.txt'), 'w') as out:
+				with open(ROOT_FOLDER / os.path.join(result_path, filename + '.txt'), 'w', encoding="utf-8") as out:
 					out.write(final_output)
 				
 		# ZIP le dossier résultat
 		shutil.make_archive(result_path, 'zip', result_path)
 		
 		output_stream = BytesIO()
-		with open(result_path + '.zip', 'rb') as res:
+		with open(str(result_path) + '.zip', 'rb') as res:
 			content = res.read()
 
 		output_stream.write(content)
@@ -135,6 +139,10 @@ def run_tesseract():
 @app.route('/creer_corpus')
 def creer_corpus():
 	return render_template('creer_corpus.html')
+
+@app.route('/correction_erreur')
+def correction_erreur():
+	return render_template('correction_erreur.html')
 
 @app.route('/entites_nommees')
 def entites_nommees():
@@ -299,8 +307,9 @@ def txt_to_xml(filename, fields):
 	return root
 #-----------------------------------------------------------------
 def generate_random_corpus(nb):
+	
 	# Read list of urls
-	with open("wikisource_bib.txt", 'r') as bib:
+	with open(ROOT_FOLDER / 'static/wikisource_bib.txt', 'r') as bib:
 		random_texts = bib.read().splitlines()
 
 	# Pick random urls
@@ -360,17 +369,10 @@ def named_entity_recognition():
 	output_stream.truncate(0)
 	return response
 
-
-if __name__ == '__main__':
-   app.debug = True
-   app.run()
-
-
-
 #-----------------------------------------------------------------
 @app.route('/bios_converter', methods=["GET", "POST"])
 @stream_with_context
-def biosconverter():
+def bios_converter():
     fields = {}
     if request.method == 'POST':
         biosfile_a = request.files['file1']
@@ -383,7 +385,7 @@ def biosconverter():
             'MISC': 2,
             'O': 4
         }
-        print('This is error output', file=sys.stderr)
+        #print('This is error output', file=sys.stderr)
         annotations = []
         csv_header = ['token']
         csv_header.append(fields['annotator_a'])
@@ -404,7 +406,7 @@ def biosconverter():
 
 
             with open(path_to_file, "r") as fin:
-                print(path_to_file, file=sys.stderr)
+                #print(path_to_file, file=sys.stderr)
                 for line in fin:
 
                     line = line.strip()
@@ -453,3 +455,6 @@ def isImg(filename):
     	return True
     except IOError:
     	return False"""
+
+if __name__ == "__main__":
+	app.run()
