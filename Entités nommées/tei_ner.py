@@ -19,6 +19,8 @@ exemples d'utilisation:
     python ./tei_ner.py entree.xml.tei sortie.xml.tei
     python ./tei_ner.py entree.xml.tei sortie.xml.tei -a spacy -m fr_core_news_lg -b s
     python ./tei_ner.py entree.xml.tei sortie.xml.tei -a flair -m "flair/ner-french"
+    python ./tei_ner.py entree.xml.tei sortie.xml.tei -f LOC
+    python ./tei_ner.py entree.xml.tei sortie.xml.tei -f PER LOC
 """
 
 import pathlib
@@ -69,7 +71,7 @@ entity_iterators = {
 }
 
 
-def tei_ner_params(contenu, racine, balise, moteur, modele, encodage="utf-8"):
+def tei_ner_params(contenu, racine, balise, moteur, modele, filtre=None, encodage="utf-8"):
     loader = loaders.get(moteur)
     iterator = entity_iterators.get(moteur)
 
@@ -82,10 +84,10 @@ def tei_ner_params(contenu, racine, balise, moteur, modele, encodage="utf-8"):
     pipeline = loader(modele)
     label_function = get_label_function(moteur, pipeline)
     tree = etree.parse(BytesIO(contenu))
-    return tei_ner(tree, racine, balise, label_function, iterator, encodage=encodage)
+    return tei_ner(tree, racine, balise, label_function, iterator, filtre, encodage=encodage)
 
 
-def tei_ner(arbre, racine, balise, annotateur, iterateur, encodage="utf-8"):
+def tei_ner(arbre, racine, balise, annotateur, iterateur, filtre, encodage="utf-8"):
     """Annote un fichier TEI avec un moteur de reconnaissance d'entités nommées.
     Renvoie un objet XML (lxml.etree.ElementTree). Tout formattage du texte
     (ex: italique, gras, etc.) sera perdu au cours du processus.
@@ -113,9 +115,11 @@ def tei_ner(arbre, racine, balise, annotateur, iterateur, encodage="utf-8"):
     """
 
     xmlns = "http://www.tei-c.org/ns/1.0"
+    filtre = set(filtre or [])
 
     textnode = next(arbre.iterfind(f".//{{{xmlns}}}{racine}"))
-    for node in textnode.iterfind(f".//{{{xmlns}}}{balise}"):
+    paragraphs = list(textnode.iterfind(f".//{{{xmlns}}}{balise}"))
+    for node in paragraphs:
         # get all the text content of node. This will remove any existing XML
         # formatting as we will provide annotations for the text and replace the
         # content of the XML, so beware.
@@ -125,7 +129,12 @@ def tei_ner(arbre, racine, balise, annotateur, iterateur, encodage="utf-8"):
 
         prev = 0
         previous_node = None
-        for label, start, end in iterateur(annotateur(text)):
+        entities = [
+            (label, start, end)
+            for (label, start, end) in iterateur(annotateur(text))
+            if not filtre or label in filtre
+        ]
+        for label, start, end in entities:
             if prev == 0:
                 node.text = text[prev: start]
             else:
@@ -152,10 +161,12 @@ def main(
     balise="p",
     annotateur="spacy",
     modele="fr_core_news_md",
+    filtre=None,
     encodage="utf-8"
 ):
     inputpath = pathlib.Path(fichier)
     outputpath = pathlib.Path(sortie)
+    filtre = set(filtre or [])
 
     if outputpath.exists() and inputpath.samefile(outputpath):
         raise ValueError("Les fichiers d'entrée et de sortie sont identiques")
@@ -172,7 +183,7 @@ def main(
     pipeline = loader(modele)
     label_function = get_label_function(annotateur, pipeline)
     tree = etree.parse(fichier)
-    tree = tei_ner(tree, racine, balise, label_function, iterator, encodage=encodage)
+    tree = tei_ner(tree, racine, balise, label_function, iterator, filtre, encodage=encodage)
 
     with open(sortie, "w", encoding="utf-8") as output_stream:
         output_stream.write(
@@ -212,6 +223,13 @@ if __name__ == "__main__":
         "--modele",
         default="fr_core_news_md",
         help="Le modèle à utiliser par l'annotateur (défaut : fr_core_news_md)"
+    )
+    parser.add_argument(
+        "-f",
+        "--filtre",
+        nargs="*",
+        default=None,
+        help="La liste des types d'entités à garder (par défaut: tout garder)"
     )
     parser.add_argument(
         "-e",
