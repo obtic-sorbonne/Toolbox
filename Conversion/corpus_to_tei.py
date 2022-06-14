@@ -21,6 +21,19 @@ from lxml.builder import ElementMaker
 from pyexcel_ods import get_data
 
 
+def licence_link(licence):
+    l = licence.lower()
+
+    if l.startswith("cc ") or l.startswith("cc-"):
+        l = l[3:]
+
+    if l.startswith("by"):
+        return f"https://creativecommons.org/licenses/{l}/4.0/"
+
+    return licence  # other licences will keep their name
+
+
+
 def corpus_to_tei(
     corpus_path,
     ods_path,
@@ -28,7 +41,8 @@ def corpus_to_tei(
     output_path="output",
     responsibility=None,
     editor=None,
-    edition=None
+    edition=None,
+    licence="by-nc-sa",
 ):
     """Convertit chaque fichier d'un dossier en TEI. Seuls les fichiers ayant
     la bonne extension seront convertis. Les fichiers TEI générés seront écrits
@@ -101,7 +115,7 @@ def corpus_to_tei(
                         E.idno(),
                         E.availability(
                             E.licence(
-                                E.p, target="http://creativecommons.org/licenses/by-nc-nd/3.0/fr/"
+                                f"Licence {licence}", target=licence_link(licence)
                             ),
                             status="restricted",
                         ),
@@ -163,6 +177,7 @@ if __name__ == "__main__":
     parser.add_argument("-r", "--responsibility", help="Who has responsibility?")
     parser.add_argument("--editor", help="Who is the editor?")
     parser.add_argument("--edition", help="What is the edition?")
+    parser.add_argument("--licence", default="by-nc-sa", help="What is the licence? (default: by-nc-sa)")
 
     args = parser.parse_args()
 
