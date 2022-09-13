@@ -30,30 +30,26 @@ if __name__ == "__main__":
 
             soup = BeautifulSoup(xml)
             for s in soup.find_all('s'):
-                if 'annotation' in s.attrs:
+                if 'annotation' not in s.attrs:
+                    ann_dict['filename'].append(filename.split('/')[len(filename.split('/')) - 1])
+                    ann_dict['example'].append(s.text.strip())
+                    for j in range(1, max_ann + 1):
+                        ann_dict['annotation' + str(j)].append(' ')
+                else:
                     if '|' in str(s.attrs['annotation']):
                         ann_split = s.attrs['annotation'].split('|')
                         ann_dict['filename'].append(filename.split('/')[len(filename.split('/')) - 1])
                         ann_dict['example'].append(s.text.strip())
-                        for j in range(max_ann):
-                            if len(ann_split) >= max_ann:
-                                ann_dict['annotation' + str(j + 1)].append(ann_split[j])
-                            else:
-                                ann_dict['annotation' + str(j + 1)].append(' ')
+                        for g, ann in enumerate(ann_split):
+                            ann_dict['annotation' + str(g + 1)].append(ann.strip())
+                        for j in range(len(ann_split) + 1, max_ann + 1):
+                            ann_dict['annotation' + str(j)].append(' ')
                     else:
-                        if 'annotation1' in ann_dict:
-                            ann_dict['annotation1'].append(s.attrs['annotation'])
-                        else:
-                            ann_dict['annotation1'] = s.attrs['annotation']
-                        for j in range(1, max_ann):
-                            ann_dict['annotation' + str(j + 1)].append(' ')
+                        ann_dict['annotation1'].append(s.attrs['annotation'].strip())
+                        for j in range(2, max_ann + 1):
+                            ann_dict['annotation' + str(j)].append(' ')
                         ann_dict['filename'].append(filename.split('/')[len(filename.split('/')) - 1])
                         ann_dict['example'].append(s.text.strip())
-                else:
-                    ann_dict['filename'].append(filename.split('/')[len(filename.split('/')) - 1])
-                    ann_dict['example'].append(s.text.strip())
-                    for j in range(max_ann):
-                        ann_dict['annotation' + str(j + 1)].append(' ')
 
     df = pd.DataFrame.from_dict(ann_dict)
     df.to_csv(r'table_of_annotations.csv', index=False, header=True, encoding='UTF-8')
