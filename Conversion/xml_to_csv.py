@@ -14,7 +14,7 @@ if __name__ == "__main__":
             with open(filename, 'r', encoding='UTF-8') as f:
                 xml = f.read()
 
-            soup = BeautifulSoup(xml)
+            soup = BeautifulSoup(xml, 'lxml')
             for s in soup.find_all('s'):
                 if 'annotation' in s.attrs:
                     if '|' in str(s.attrs['annotation']) and max_ann < len(s.attrs['annotation'].split('|')):
@@ -28,7 +28,7 @@ if __name__ == "__main__":
             with open(filename, 'r') as f:
                 xml = f.read()
 
-            soup = BeautifulSoup(xml)
+            soup = BeautifulSoup(xml, 'lxml')
             for s in soup.find_all('s'):
                 if 'annotation' not in s.attrs:
                     ann_dict['filename'].append(filename.split('/')[len(filename.split('/')) - 1])
