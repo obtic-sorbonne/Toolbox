@@ -24,6 +24,7 @@ Le fichier de sortie contient les informations suivantes :
 
 - Résumé de la conclusion
 
+Les résumés automatique et la détection des mots-clés sont basés sur des modèles BERT.
 
 
 ## Exécution du script
