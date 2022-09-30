@@ -60,7 +60,7 @@ def writeHTML(filepath, title, nb_words, m, abstract_summary, overview, intro_su
 	<div id="info"><p id="nb_words"></p><p id="reading_time"></p></div>\
 	<div><p id="en_abstract"></p></div>\
 	<h2>Overview</h2>\
-	<div id="overview"><ul></ul></div>\
+	<div><ul id="overview"></ul></div>\
 	<div><h2>Introduction Summary</h2>\
 	<p id="intro_summary"></p>\
 	<h2>Conclusion Summary</h2>\
@@ -104,6 +104,10 @@ def writeHTML(filepath, title, nb_words, m, abstract_summary, overview, intro_su
 	with open(outputname, 'w') as output:
 		output.write(str(new_soup.prettify()))
 
+
+#_________________________________________________
+# MAIN
+#_________________________________________________
 
 # Lecture paramètres
 if len(sys.argv) < 2:
@@ -168,7 +172,7 @@ for sec in sections:
 
 
 	# Résumé introduction
-	if current_sec_title.lower() == 'introduction':
+	if 'introduction' in current_sec_title.lower():
 		intro_summary = ''.join(bert_model(current_text, min_length=50))
 		print("Introduction summary (BERT): {}\n".format(intro_summary))
 
