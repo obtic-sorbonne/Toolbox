@@ -4,9 +4,7 @@ Ce script permet de générer une fiche au format HTML résumant le contenu d'un
 
 ## Format d'entrée du fichier XML
 
-Le format des articles scientifiques en entrée est celui de la revue *[Comunicar](https://www.revistacomunicar.com/)*. Les différentes sections de l'article doivent se trouver dans des balises <sec>, les titres des sections dans <title> et le contenu textuel dans des balises <p>. Les figures doivent être signalées par des balises <fig>.
-
-
+Le format des articles scientifiques en entrée est celui de la revue *[Comunicar](https://www.revistacomunicar.com/)*. Les différentes sections de l'article doivent se trouver dans des balises `<sec>`, les titres des sections dans `<title>` et le contenu textuel dans des balises `<p>`. Les figures doivent être signalées par des balises `<fig>`.
 
 ## Format de sortie
 
@@ -25,7 +23,6 @@ Le fichier de sortie contient les informations suivantes :
 - Résumé de la conclusion
 
 Les résumés automatique et la détection des mots-clés sont basés sur des modèles BERT.
-
 
 ## Exécution du script
 
