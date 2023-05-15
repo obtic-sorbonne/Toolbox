@@ -3,6 +3,7 @@
 L'équipe [ObTIC-Sorbonne](https://obtic.sorbonne-universite.fr/) met à disposition une suite d'outils, de scripts et de ressources utiles pour la manipulation et le traitement de données textuelles.
 
 <img src="https://obtic.sorbonne-universite.fr/wp-content/uploads/2022/03/data.png" width="300" height="300">
+<<<<<<< HEAD
 
 ## Description des outils
 
@@ -38,3 +39,5 @@ Voir le dossier `train_spacy` dans le dossier [Entités nommées](https://github
 #### Configurer un recommandeur sur le service web Inception
 
 Voir le dossier [Entités nommées/inception-recommandeur](https://github.com/obtic-scai/Toolbox/tree/dev/Entit%C3%A9s%20nomm%C3%A9es/inception-recommandeur).
+=======
+>>>>>>> main

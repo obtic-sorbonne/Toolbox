@@ -1,4 +1,8 @@
+<<<<<<< HEAD:Scraping/README.md
 # Collecte de corpus (Scraping)
+=======
+# Collecte de corpus (Scrapping)
+>>>>>>> main:Scrapping/README.md
 La plateforme [Wikisource](https://fr.wikisource.org/wiki/Wikisource:Accueil) contient de très nombreux textes littéraires libres de droits. Le script `scrape_wikisource.py` permet d'extraire automatiquement un ou plusieurs échantillons d'un texte à partir de son URL Wikisource.
 
 Prérequis : Python 3.7 ou au-dessus. Beautiful Soup 4 doit être installé : 
