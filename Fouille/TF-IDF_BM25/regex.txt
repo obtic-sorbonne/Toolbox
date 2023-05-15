@@ -1,0 +1,205 @@
+Achromatopsie(s)? hystérique(s)?
+Amblyopie(s)? hystérique(s)?
+Amyotrophie(s)? protopathique(s)?
+Amyotrophie(s)? symptomatique(s)?
+Analgésie(s)?
+Anesthésie(s)?
+Angioneuroses(s)?
+Apoplexie(s)? spinale(s)?
+Arthrite(s)? déformante(s)?
+Arthropathie(s)? de(s)? ataxiques(s)?
+Articulations(s)?
+Ataxie(s)? locomotrice(s)?
+Atrophie(s)? musculaire(s)?
+Atrophie(s)? progressive(s)?
+Attaque(s)?-Accès
+Attaque(s)? apoplectiforme(s)?
+Attaque(s)? hystérique(s)?
+Attitude(s)? passionnelles(s)?
+Attraction(s)?
+Aura(s)? hystérique(s)?
+Avant-mur(s)?
+Bromure(s)? de(s)? camphre(s)?
+Bulbe(s)? rachidien(s)?
+Capsule(s)? interne(s)?
+Capsule(s)? surrénale(s)?
+Catalepsie(s)?
+Cellule(s)? nerveuse(s)?
+Cerveau(s)?
+Chloroforme(s)?
+Chorée(s)?
+Chorée(s)? rythmique(s)? hystérique(s)?
+Cicatrice(s)? vicieuse(s)?
+Cirrhose(s)? de(s)? muscle(s)?
+Cœlialgie(s)?
+Compression(s)? de(s)? l'ovaire(s)?
+Congestion(s)?
+Contractilité(s)? électrique(s)?
+Contracture(s)? hystérique(s)? permanente(s)?
+Contracture(s)? permanente(s)?
+Contracture(s)? tardive(s)?
+Contracture(s)? de(s)? uretère(s)?
+Convulsionnaire(s)?
+Convulsion(s)?
+Corde(s)? (du|des) tympan(s)?
+Corps granuleux
+Corps opto-strié(s)?
+Courant(s)? électriques(s)?
+Crise(s)? gastrique(s)?
+Danse(s)?
+Décubitus aigu(s)?
+Dégénération(s)? cireuse(s)?
+Délire(s)?
+Démarche(s)?
+Diplopie(s)?
+Douleurs(s)?
+Dynamométrie(s)?
+Ecchymoses(s)?
+Ecriture(s)?
+Ecthyma(s)?
+Electro-Diagnostic(s)?
+Embolie(s)?
+Encéphalite(s)?
+Endocardite(s)?
+Epidémie(s)?
+Epilepsie(s)?
+Epilepsie(s)? spinale(s)?
+Eruption(s)?
+Erythème(s)? pernios
+Escarre(s)? (de|des) la fesse(s)?
+Escarre(s)? sacrée(s)?
+Etat(s)? de(s)? (mal|maux) épileptique(s)?
+Etat(s)? de(s)? (mal|maux) hystéro-épileptique(s)?
+Ether(s)?
+Excitabilité(s)?
+Expériences(s)?
+Faisceau(x)? racliculaire(s)? interne(s)?
+Faradisation(s)?
+Fève(s)? de(s)? Calabar(s)?
+Ganglion(s)?
+Glossy skin(s)?
+Globe(s)? hystérique(s)?
+Griffe(s)?
+Hématomyélie(s)?
+Hémianesthésie(s)? hystérique(s)?
+Hémianesthésie(s)? de(s)? cause(s)? encéphalique(s)?
+Hémichorée(s)?
+Hémiopie(s)?
+Hémiparaplégie(s)?
+Hémiplégie(s)?
+Histologie(s)?
+Hypérémié(s)?
+Hyperesthésie(s)? ovarienne(s)?
+Hystérie(s)?
+Hystérie(s)? épileptiforme(s)?
+Hystérie(s)? ovarienne(s)?
+Hystérie(s)? grave(s)?
+Hystérie(s)? locale(s)?
+Hystérie(s)? infantile(s)?
+Hystérie(s)? locale(s)? traumatique(s)?
+Hystéro-épilepsie(s)?
+Immobilisation(s)?
+Incoorbination(s)? motrice(s)?
+Infection(s)?
+Intoxication(s)?
+Irritabilité(s)?
+Irritation(s)?
+Ischémie(s)?
+Ischurie(s)?
+Langue(s)?
+Latéropulsion(s)?
+Lèpre(s)?
+Lésion(s)?
+Lésion(s)? oculaire(s)?
+Main(s)?
+Maladie(s)? de(s)? Parkinson
+Méningite(s)? ascendante(s)?
+Méningite(s)? cervical(es)?
+Métalloscopie(s)?
+Miracle(s)?
+Moëlle(s)? épinière(s)?
+Muscle(s)?
+Myélite(s)? aiguë(s)? centrale(s)?
+Myélite(s)? partielle(s)?
+Myélite(s)? traumatique(s)?
+Myodynie(s)?
+Myopathie(s)?
+Néphro-cystite(s)?
+Néphrotomie(s)?
+Nerf(s)?
+Nerf(s)? dilatateur(s)?
+Nerf(s)? faci(al|aux)
+Nerf(s)? glandulaire(s)?
+Nerf(s)? sciatique(s)?
+Nerf(s)? sécréteur(s)?
+Nerf(s)? trijumeau(x)?
+Nerf(s)? trophique(s)?
+Nerf(s)? vaso-moteur(s)?
+Névrite(s)?
+Névroglie(s)?
+Nitrite(s)? d'amyle(s)?
+Nutrition(s)?
+Nystagmus
+Oblitération(s)?
+Oligurie(s)? hystérique(s)?
+Os
+Ovaire(s)?
+Ovarie(s)? hystérique(s)?
+Paralysie(s)? agitante(s)?
+Paralysie(s)? bulbaire(s)?
+Paralysie(s)? consécutive(s)?
+Paralysie(s)? générale(s)? progressive(s)?
+Paralysie(s)? générale(s)? spinale(s)?
+Paralysie(s)? hystérique(s)?
+Paralysie(s)? infantile(s)?
+Paralysie(s)? labio-glosso-laryngée(s)?
+Paralysie(s)? pseudo-hypertrophique(s)?
+Paralysie(s)? rhumatismale(s)?
+Paraplégie(s)? traumatique(s)?
+Parésie(s)?
+Parole(s)?
+Peau(x)?
+Petit(s)? (mal|maux)
+Pharynx
+Phlegmon(s)?
+Pied(s)?
+Pied(s)? bot(s)?
+Pouls
+Préambule(s)?
+Propulsion(s)?
+Putamen(s)?
+Rein(s)?
+Rémission(s)?
+Rétention(s)?
+Rétropuesion(s)?
+Rigidité(s)?
+Salivation(s)?
+Sclérodermie(s)?
+Sclérose(s)? fasciculée(s)?
+Sclérose(s)? descendante(s)?
+Sclérose(s)? latérale(s)?
+Sclérose(s)? postérieure(s)?
+Sclérose(s)? en plaque(s)? disséminées(s)?
+Secours
+Section(s)?
+Simulation(s)?
+Somnambulisme(s)?
+Tarentisme(s)?
+Température(s)?
+Torticoli(s)?
+Thermoanesthésie(s)?
+Tremblement(s)?
+Trépidation(s)?
+Trismus
+Trouble(s)? trophiques(s)?
+Tubercule(s)? de(s)? la moëlle(s)?
+Tympanisme(s)?
+Urée(s)?
+Uretère(s)?
+Urticaire(s)?
+Vertige(s)?
+Vision(s)?
+Vomissement(s)? hystériques(s)?
+Vomissement(s)? urémiques(s)?
+Vomissement(s)? de(s)? sang(s)?
+Zona(s)?

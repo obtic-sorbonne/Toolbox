@@ -1,0 +1,81 @@
+[build-system]
+requires = [
+    "setuptools",
+    "setuptools-scm"
+]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "todh"
+description = "TODH, a TOolbox for Digital Humanities."
+readme = "README.rst"
+requires-python = ">=3.6, !=3.8.0, !=3.8.1"
+keywords = [
+    "digital humanities"
+]
+authors = [
+    {name = "Motasem Alrahabi", email = "motasem.alrahabi@sorbonne-universite.fr"}
+]
+maintainers = [
+    {name = "Motasem Alrahabi", email = "motasem.alrahabi@sorbonne-universite.fr"}
+]
+license = {text = "MIT License"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3 :: 3.6",
+    "Programming Language :: Python :: 3 :: 3.7",
+    "Programming Language :: Python :: 3 :: 3.8",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+dependencies = [
+    "lxml",
+    "spacy",
+    "flair"
+]
+dynamic = ["version"]
+
+
+[project.optional-dependencies]
+
+
+
+[project.scripts]
+todh-tei_ner = "todh.ner.tei:main"
+todh-corpus_to_tei = "todh.conversion.corpus_to_tei:main"
+todh-scrape_wikisource = "todh.scraping.wikisource:main"
+
+
+[project.urls]
+homepage = "https://github.com/obtic-scai/Toolbox"
+repository = "https://github.com/obtic-scai/Toolbox"
+bug-tracker = "https://github.com/obtic-scai/Toolbox/issues"
+
+
+[tool.setuptools.dynamic]
+version = {attr = "todh.__version__"}
+
+
+[tool.setuptools.packages.find]
+where = ["src"]  # list of folders that contain the packages (["."] by default)
+include = ["todh*"]  # package names should match these glob patterns (["*"] by default)
+exclude = ["todh.tests*"]  # exclude packages matching these glob patterns (empty by default)
+namespaces = false  # to disable scanning PEP 420 namespaces (true by default)
+
+
+[tool.black]
+line-length = 100
+include = '''
+(
+      ^/tests/
+    | ^/src/
+    | ^/setup[.]py
+)
+'''
+exclude = '''
+(
+    __pycache__
+)
+'''

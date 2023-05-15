@@ -8,8 +8,12 @@ exemples d'utilisation:
   python ./corpus_to_tei.py donnees-corrigees metadata.ods
 """
 
+# authors: Arthur Provenier, Yoann Dupont
+
+
 import uuid
 import pathlib
+from datetime import date
 
 from lxml import etree
 from lxml.builder import ElementMaker
@@ -17,7 +21,29 @@ from lxml.builder import ElementMaker
 from pyexcel_ods import get_data
 
 
-def corpus_to_tei(corpus_path, ods_path, ext=".txt", output_path="output"):
+def licence_link(licence):
+    l = licence.lower()
+
+    if l.startswith("cc ") or l.startswith("cc-"):
+        l = l[3:]
+
+    if l.startswith("by"):
+        return f"https://creativecommons.org/licenses/{l}/4.0/"
+
+    return licence  # other licences will keep their name
+
+
+
+def corpus_to_tei(
+    corpus_path,
+    ods_path,
+    ext=".txt",
+    output_path="output",
+    responsibility=None,
+    editor=None,
+    edition=None,
+    licence="by-nc-sa",
+):
     """Convertit chaque fichier d'un dossier en TEI. Seuls les fichiers ayant
     la bonne extension seront convertis. Les fichiers TEI générés seront écrits
     dans le même dossier de sortie.
@@ -80,16 +106,16 @@ def corpus_to_tei(corpus_path, ods_path, ext=".txt", output_path="output"):
                 E.fileDesc(
                     E.titleStmt(E.title(f"{toptitle}"), E.author(f"{author}")),
                     E.editionStmt(
-                        E.edition("Thèse de doctorat"),
-                        E.respStmt(E.resp(), E.name("Angélique Allaire")),
+                        E.edition(edition or "{edition}"),  # formerly: "Thèse de doctorat"
+                        E.respStmt(E.resp(), E.name(responsibility or "{responsibility}")),  # formerly: FirstName LastName
                     ),
                     E.publicationStmt(
-                        E.publisher("Obvil"),
-                        E.date(when="2020"),
+                        E.publisher(editor or "{editor}"),  # formerly: "OBVIL"
+                        E.date(when=str(date.today().year)),
                         E.idno(),
                         E.availability(
                             E.licence(
-                                E.p, target="http://creativecommons.org/licenses/by-nc-nd/3.0/fr/"
+                                f"Licence {licence}", target=licence_link(licence)
                             ),
                             status="restricted",
                         ),
@@ -107,7 +133,7 @@ def corpus_to_tei(corpus_path, ods_path, ext=".txt", output_path="output"):
                             E.term(
                                 f"{toptitle}", type="title"
                             ),  # Modifier ici et mettre 'title' à la place de 'toptitle'
-                            E.term("OBVIL", type="edition"),
+                            E.term(editor or "{editor}", type="edition"),  # formerly: "OBVIL"
                             E.term(f"{publisher}", type="publisher"),
                             E.term(f"{author}", type="author"),
                             E.term(type="recipient"),
@@ -148,6 +174,10 @@ if __name__ == "__main__":
     parser.add_argument("ods_path", help="metadata.ods")
     parser.add_argument("-e", "--ext", default=".txt", help="")
     parser.add_argument("-o", "--output-path", default="output", help="")
+    parser.add_argument("-r", "--responsibility", help="Who has responsibility?")
+    parser.add_argument("--editor", help="Who is the editor?")
+    parser.add_argument("--edition", help="What is the edition?")
+    parser.add_argument("--licence", default="by-nc-sa", help="What is the licence? (default: by-nc-sa)")
 
     args = parser.parse_args()
 
